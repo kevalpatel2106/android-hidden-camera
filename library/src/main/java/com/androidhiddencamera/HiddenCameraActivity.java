@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public abstract class HiddenCameraActivity extends AppCompatActivity implements CameraCallbacks{
+public abstract class HiddenCameraActivity extends AppCompatActivity implements CameraCallbacks {
 
     private CameraPreview mCameraPreview;
 
@@ -36,7 +36,7 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
 
     public void startCamera(@CameraFacing.SupportedCameraFacing int cameraFacing) {
         if (cameraFacing == CameraFacing.FRONT_FACING_CAMERA || cameraFacing == CameraFacing.REAR_FACING_CAMERA) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
                 return;
             }
@@ -44,6 +44,14 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
             mCameraPreview.startPreview(cameraFacing);
         } else {
             throw new IllegalArgumentException("Invalid camera facing value.");
+        }
+    }
+
+    public void takePicture() {
+        if (mCameraPreview != null && mCameraPreview.isSafeToTakePictureInternal()) {
+            mCameraPreview.takePictureInternal();
+        } else {
+            throw new RuntimeException("Background camera not initialized. Call startCamera() to initialize the camera.");
         }
     }
 
@@ -66,19 +74,19 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
         if (view instanceof LinearLayout) {
             LinearLayout linearLayout = (LinearLayout) view;
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(1, 1);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(400, 400);
             linearLayout.addView(cameraSourceCameraPreview, params);
         } else if (view instanceof RelativeLayout) {
             RelativeLayout relativeLayout = (RelativeLayout) view;
 
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(1, 1);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(400, 400);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+//            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             relativeLayout.addView(cameraSourceCameraPreview, params);
         } else if (view instanceof FrameLayout) {
             FrameLayout frameLayout = (FrameLayout) view;
 
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1, 1);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(400, 400);
             frameLayout.addView(cameraSourceCameraPreview, params);
         } else {
             throw new RuntimeException("Root view of the activity/fragment cannot be frame layout");

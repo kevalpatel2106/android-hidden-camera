@@ -1,8 +1,10 @@
 package com.androidhiddencamera;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.support.annotation.NonNull;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,29 +19,26 @@ import java.util.List;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private HiddenCameraActivity mHiddenCameraActivity;
-
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
+
+    private boolean safeToTakePicture = false;
 
     CameraPreview(@NonNull Context context) {
         super(context);
 
         //validate the context
-        if (context instanceof HiddenCameraActivity){
+        if (context instanceof HiddenCameraActivity) {
             mHiddenCameraActivity = (HiddenCameraActivity) context;
-        }else {
+        } else {
             throw new IllegalArgumentException("You must inherit HiddenCameraActivity in your parent class.");
         }
 
-        //create the surface view
-        SurfaceView surfaceView = new SurfaceView(context);
-        addView(surfaceView);
-
         //Set surface holder
-        mHolder = surfaceView.getHolder();
+        mHolder = getHolder();
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
@@ -52,41 +51,53 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-
+        try {
+            mCamera.setDisplayOrientation(90);
+            mCamera.setPreviewDisplay(surfaceHolder);
+            mCamera.startPreview();
+        } catch (IOException e) {
+            // left blank for now
+            mHiddenCameraActivity.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
+        }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        safeToTakePicture = false;
+
         // Now that the size is known, set up the camera parameters and begin the preview.
         Camera.Parameters parameters = mCamera.getParameters();
 
-        List<Camera.Size> previewSizes = mCamera.getParameters().getSupportedPreviewSizes();
-        parameters.setPreviewSize(previewSizes.get(previewSizes.size() - 1).width, previewSizes.get(previewSizes.size() - 1).height);
+        List<Camera.Size> previewSizes = mCamera.getParameters().getSupportedPictureSizes();
+        parameters.setPreviewSize(previewSizes.get(previewSizes.size() - 1).width,
+                previewSizes.get(previewSizes.size() - 1).height);
         requestLayout();
         mCamera.setParameters(parameters);
 
         mCamera.startPreview();
-    }
+        safeToTakePicture = true;
+     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // Surface will be destroyed when we return, so stop the preview.
         // Call stopPreview() to stop updating the preview surface.
         if (mCamera != null) {
+            safeToTakePicture = false;
             mCamera.stopPreview();
         }
     }
 
-    public void startPreview(int id) {
+    void startPreview(int id) {
         if (safeCameraOpen(id)) {
-            stopPreviewAndFreeCamera();
-
             if (mCamera != null) {
                 requestLayout();
 
                 try {
                     mCamera.setPreviewDisplay(mHolder);
                     mCamera.startPreview();
+
+                    safeToTakePicture = true;
                 } catch (IOException e) {
                     e.printStackTrace();
 
@@ -103,6 +114,7 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
 
         try {
             stopPreviewAndFreeCamera();
+
             mCamera = Camera.open(id);
             qOpened = (mCamera != null);
         } catch (Exception e) {
@@ -113,10 +125,25 @@ class CameraPreview extends ViewGroup implements SurfaceHolder.Callback {
         return qOpened;
     }
 
+    boolean isSafeToTakePictureInternal() {
+        return safeToTakePicture;
+    }
+
+    void takePictureInternal() {
+        mCamera.takePicture(null, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] bytes, Camera camera) {
+                mHiddenCameraActivity.onImageCapture(BitmapFactory
+                        .decodeByteArray(bytes, 0, bytes.length));
+            }
+        });
+    }
+
     /**
      * When this function returns, mCamera will be null.
      */
-    public void stopPreviewAndFreeCamera() {
+    void stopPreviewAndFreeCamera() {
+        safeToTakePicture = false;
 
         if (mCamera != null) {
             mCamera.stopPreview();

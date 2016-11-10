@@ -17,8 +17,8 @@ public class CameraFacing {
         throw new RuntimeException("Cannot initialize this class.");
     }
 
-    public static final int REAR_FACING_CAMERA = 1;
-    public static final int FRONT_FACING_CAMERA = 2;
+    public static final int REAR_FACING_CAMERA = 0;
+    public static final int FRONT_FACING_CAMERA = 1;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({REAR_FACING_CAMERA,FRONT_FACING_CAMERA})
