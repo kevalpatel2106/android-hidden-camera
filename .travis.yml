@@ -1,0 +1,64 @@
+language: android
+jdk: oraclejdk8
+sudo: false
+
+notifications:
+    email:
+        - kevalpatel2106@gmail.com
+        
+env:
+    global:
+        - ADB_INSTALL_TIMEOUT=10    #Time out to 10 mins
+    
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:      #Cache all dirs under .gradle folder
+    - $HOME/.gradle/daemon      #Cache daemon logs
+    - $HOME/.gradle/native      #Cache library downloaded from the gradle dependency
+    - $HOME/.gradle/wrapper     #Cache the gradle
+    
+android:
+    update_sdk: true
+    components:
+        - platform-tools
+        - tools
+        - build-tools-25.0.0
+        - android-25
+
+        # Additional components
+        - extra-google-google_play_services
+        - extra-google-m2repository
+        - extra-android-m2repository
+
+        #system images
+        - sys-img-armeabi-v7a-android-22
+  
+licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+    
+before_script:
+    - chmod +x gradlew      #Grand permissions
+    - android list targets
+    - echo no | android create avd --force --name test --target android-21 --abi armeabi-v7a    #Create AVD for API 21
+    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
+
+script:
+    - echo "Travis branch is $TRAVIS_BRANCH"
+    - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"
+#    - ./gradlew check -PdisablePreDex --continue --stacktrace
+    - android-wait-for-emulator
+    - adb devices   #Display list of devices
+    - adb shell input keyevent 82 &
+    - ./gradlew connectedCheck -PdisablePreDex --stacktrace
+ 
+before_install:
+    - pip install --user codecov    #Install codecov
+
+after_success:
+    - codecov                       #Run codecov
+
+after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"
