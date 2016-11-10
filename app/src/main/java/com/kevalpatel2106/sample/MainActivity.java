@@ -24,16 +24,20 @@ public class MainActivity extends HiddenCameraActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Check for the camera permission for the runtime
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+
+            //Start camera preview
             startCamera(CameraFacing.FRONT_FACING_CAMERA);
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 101);
         }
 
-
+        //Take a picture
         findViewById(R.id.capture_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Take picture using the camera without preview.
                 takePicture();
             }
         });
@@ -54,6 +58,8 @@ public class MainActivity extends HiddenCameraActivity {
 
     @Override
     public void onImageCapture(@NonNull Bitmap image) {
+
+        //Display the image to the image view
         ((ImageView)findViewById(R.id.cam_prev)).setImageBitmap(image);
     }
 
@@ -61,12 +67,17 @@ public class MainActivity extends HiddenCameraActivity {
     public void onCameraError(int errorCode) {
         switch (errorCode) {
             case CameraError.ERROR_CAMERA_OPEN_FAILED:
+                //Camera open failed. Probably because another application
+                //is using the camera
                 Toast.makeText(this, "Cannot open camera.", Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
+                //camera permission is not available
+                //Ask for the camra permission before initializing it.
                 Toast.makeText(this, "Camera permission not available.", Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_TAKE_IMAGE_FAILED:
+                //Take picture failed.
                 Toast.makeText(this, "Cannot capture image.", Toast.LENGTH_LONG).show();
                 break;
         }

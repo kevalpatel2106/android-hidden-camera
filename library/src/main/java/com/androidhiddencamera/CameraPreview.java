@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by Keval on 10-Nov-16.
+ * This surface view works as the fake preview for the camera.
  *
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
@@ -46,7 +47,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
-
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         mCamera.startPreview();
         safeToTakePicture = true;
-     }
+    }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -88,6 +88,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    /**
+     * Initialize the camera and start the preview of the camera.
+     *
+     * @param id camera id.
+     */
     void startPreview(int id) {
         if (safeCameraOpen(id)) {
             if (mCamera != null) {
@@ -109,7 +114,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    boolean safeCameraOpen(int id) {
+    private boolean safeCameraOpen(int id) {
         boolean qOpened = false;
 
         try {
