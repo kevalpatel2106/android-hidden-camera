@@ -33,7 +33,7 @@ import android.widget.RelativeLayout;
 
 /**
  * Created by Keval on 27-Oct-16.
- * This abstract class provides ability to handle background camera to the activity in which it is
+ * This abstract class provides ability to handle background camera to the fragment in which it is
  * extended.
  *
  * @author {@link 'https://github.com/kevalpatel2106'}
@@ -70,7 +70,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
             }
 
             //Add the camera preview surface to the root of the activity view.
-            mCameraPreview = addPreView();
+            if (mCameraPreview == null) mCameraPreview = addPreView();
 
             mCameraPreview.startPreview(cameraFacing);
         } else {
