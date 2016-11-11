@@ -21,22 +21,17 @@ import java.util.List;
  */
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private HiddenCameraActivity mHiddenCameraActivity;
+    private CameraCallbacks mHiddenCameraActivity;
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
 
     private boolean safeToTakePicture = false;
 
-    CameraPreview(@NonNull Context context) {
+    CameraPreview(@NonNull Context context, CameraCallbacks cameraCallbacks) {
         super(context);
 
-        //validate the context
-        if (context instanceof HiddenCameraActivity) {
-            mHiddenCameraActivity = (HiddenCameraActivity) context;
-        } else {
-            throw new IllegalArgumentException("You must inherit HiddenCameraActivity in your parent class.");
-        }
+        mHiddenCameraActivity = cameraCallbacks;
 
         //Set surface holder
         mHolder = getHolder();

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -21,20 +23,12 @@ import android.widget.RelativeLayout;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public abstract class HiddenCameraActivity extends AppCompatActivity implements CameraCallbacks {
+public abstract class HiddenCameraFragment extends Fragment implements CameraCallbacks {
 
     private CameraPreview mCameraPreview;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //Add the camera preview surface to the root of the activity view.
-        mCameraPreview = addPreView();
-    }
-
-    @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
 
         //stop preview and release the camera.
@@ -54,10 +48,13 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
         if (cameraFacing == CameraFacing.FRONT_FACING_CAMERA || cameraFacing == CameraFacing.REAR_FACING_CAMERA) {
 
             //check if the camera permission is available
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
                 return;
             }
+
+            //Add the camera preview surface to the root of the activity view.
+            mCameraPreview = addPreView();
 
             mCameraPreview.startPreview(cameraFacing);
         } else {
@@ -91,10 +88,10 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
      */
     private CameraPreview addPreView() {
         //create fake camera view
-        CameraPreview cameraSourceCameraPreview = new CameraPreview(this, this);
+        CameraPreview cameraSourceCameraPreview = new CameraPreview(getActivity(), this);
         cameraSourceCameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        View view = ((ViewGroup) getWindow().getDecorView().getRootView()).getChildAt(0);
+        View view = ((ViewGroup) getActivity().getWindow().getDecorView().getRootView()).getChildAt(0);
 
         if (view instanceof LinearLayout) {
             LinearLayout linearLayout = (LinearLayout) view;
