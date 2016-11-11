@@ -19,12 +19,10 @@ package com.kevalpatel2106.sample;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +39,7 @@ import com.androidhiddencamera.HiddenCameraFragment;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public class HiddenCamFragment extends HiddenCameraFragment {
+public class DemoCamFragment extends HiddenCameraFragment {
 
     private ImageView mImageView;
 
@@ -107,9 +105,8 @@ public class HiddenCamFragment extends HiddenCameraFragment {
                 //Ask for the camra permission before initializing it.
                 Toast.makeText(getActivity(), "Camera permission not available.", Toast.LENGTH_LONG).show();
                 break;
-            case CameraError.ERROR_TAKE_IMAGE_FAILED:
-                //Take picture failed.
-                Toast.makeText(getActivity(), "Cannot capture image.", Toast.LENGTH_LONG).show();
+            case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
+                //This error will never happen while hidden camera is used from activity or fragment
                 break;
         }
     }

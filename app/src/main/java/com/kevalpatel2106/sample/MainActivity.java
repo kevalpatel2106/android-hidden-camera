@@ -35,14 +35,21 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_using_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, HiddenCamActivity.class));
+                startActivity(new Intent(MainActivity.this, DemoCamActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_using_service).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startService(new Intent(MainActivity.this, DemoCamService.class));
             }
         });
 
         findViewById(R.id.btn_using_fragment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mHiddenCameraFragment = new HiddenCamFragment();
+                mHiddenCameraFragment = new DemoCamFragment();
 
                 getSupportFragmentManager()
                         .beginTransaction()

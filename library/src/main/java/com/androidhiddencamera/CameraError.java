@@ -16,6 +16,8 @@
 
 package com.androidhiddencamera;
 
+import android.content.Context;
+
 /**
  * Created by Keval on 10-Nov-16.
  * This class holds all the possible error codes can occur while initializing the camera.
@@ -39,7 +41,23 @@ public class CameraError {
     public static final int ERROR_CAMERA_PERMISSION_NOT_AVAILABLE = 5472;
 
     /**
-     * This error will occur if library is not able to capture the image.
+     * If the application does not have draw over other app permission, error will occur.
+     * This permission is available to all the application below Android M (<API 23).
+     * But for the API 23 and above user has to enable it manually, if the permission is not
+     * available by opening Settings -> Apps -> Gear icon on top-right corner -> Draw Over other apps.
+     *
+     * This error can occur only while using the hidden camera from the service using {@link HiddenCameraService}.
+     * Developer should check if the {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} permission
+     * is defined in the AndroidManifest.xml and display information dialog/snackbar to the
+     * user, explaining steps to grant draw over other app permission.
+     *
+     * Developer can open permission grant screen using {@link HiddenCameraUtils#openDrawOverPermissionSetting(Context)}.
+     *
+     * <B>Note:</B> This error will stop the service. Developer has to start service once
+     * "Draw over other app" permission is granted. You can check if the permission is available by
+     * calling {@link HiddenCameraUtils#canOverDrawOtherApps(Context)}.
+     *
+     * @see 'http://www.androidpolice.com/2015/09/07/android-m-begins-locking-down-floating-apps-requires-users-to-grant-special-permission-to-draw-on-other-apps/'
      */
-    public static final int ERROR_TAKE_IMAGE_FAILED = 3136;
+    public static final int ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION = 3136;
 }

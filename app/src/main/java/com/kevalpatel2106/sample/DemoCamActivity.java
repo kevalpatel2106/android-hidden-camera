@@ -30,7 +30,7 @@ import com.androidhiddencamera.CameraError;
 import com.androidhiddencamera.CameraFacing;
 import com.androidhiddencamera.HiddenCameraActivity;
 
-public class HiddenCamActivity extends HiddenCameraActivity {
+public class DemoCamActivity extends HiddenCameraActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +90,8 @@ public class HiddenCamActivity extends HiddenCameraActivity {
                 //Ask for the camra permission before initializing it.
                 Toast.makeText(this, "Camera permission not available.", Toast.LENGTH_LONG).show();
                 break;
-            case CameraError.ERROR_TAKE_IMAGE_FAILED:
-                //Take picture failed.
-                Toast.makeText(this, "Cannot capture image.", Toast.LENGTH_LONG).show();
+            case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
+                //This error will never happen while hidden camera is used from activity or fragment
                 break;
         }
     }
