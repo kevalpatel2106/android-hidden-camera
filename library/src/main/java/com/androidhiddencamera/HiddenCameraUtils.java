@@ -20,11 +20,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 
 /**
  * Created by Keval on 11-Nov-16.
+ * This class holds common camera utils.
  *
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
@@ -57,6 +59,13 @@ public class HiddenCameraUtils {
         context.startActivity(intent);
     }
 
+    /**
+     * Get the cache directory.
+     *
+     * @param context instance of the caller
+     * @return cache directory file.
+     */
+    @NonNull
     static File getCacheDir(Context context) {
         return context.getExternalCacheDir() == null ? context.getCacheDir() : context.getExternalCacheDir();
     }

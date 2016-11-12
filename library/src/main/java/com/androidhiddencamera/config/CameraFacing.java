@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by Keval on 10-Nov-16.
- * This class contains supported camera ids. That is front and rear camera.
+ * Supported camera facings.
  *
  * @author {@link 'https://github.com/kevalpatel2106'}
  */

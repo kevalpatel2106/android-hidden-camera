@@ -34,13 +34,23 @@ public class CameraConfig {
 
     public Builder getBuilder(Context context) {
         mContext = context;
-
         return new Builder();
     }
 
     @SuppressWarnings("WeakerAccess")
     public class Builder {
 
+        /**
+         * Set the resolution of the output camera image. If you don't specify any resolution,
+         * default image resolution will set to {@link CameraResolution#MEDIUM_RESOLUTION}.
+         *
+         * @param resolution Any resolution from:
+         *                   <li>{@link CameraResolution#HIGH_RESOLUTION}</li>
+         *                   <li>{@link CameraResolution#MEDIUM_RESOLUTION}</li>
+         *                   <li>{@link CameraResolution#LOW_RESOLUTION}</li>
+         * @return {@link Builder}
+         * @see CameraResolution
+         */
         public CameraConfig.Builder setCameraResolution(@CameraResolution.SupportedResolution int resolution) {
 
             //Validate input
@@ -54,6 +64,17 @@ public class CameraConfig {
             return this;
         }
 
+        /**
+         * Set the camera facing with which you want to capture image.
+         * Either rear facing camera or front facing camera. If you don't provide any camera facing,
+         * default camera facing will be {@link CameraFacing#FRONT_FACING_CAMERA}.
+         *
+         * @param cameraFacing Any camera facing from:
+         *                     <li>{@link CameraFacing#REAR_FACING_CAMERA}</li>
+         *                     <li>{@link CameraFacing#FRONT_FACING_CAMERA}</li>
+         * @return {@link Builder}
+         * @see CameraFacing
+         */
         public CameraConfig.Builder setCameraFacing(@CameraFacing.SupportedCameraFacing int cameraFacing) {
             //Validate input
             if (cameraFacing != CameraFacing.REAR_FACING_CAMERA &&
@@ -65,6 +86,16 @@ public class CameraConfig {
             return this;
         }
 
+        /**
+         * Specify the image format for the output image. If you don't specify any output format,
+         * default output format will be {@link CameraImageFormat#FORMAT_JPEG}.
+         *
+         * @param imageFormat Any supported image format from:
+         *                    <li>{@link CameraImageFormat#FORMAT_JPEG}</li>
+         *                    <li>{@link CameraImageFormat#FORMAT_PNG}</li>
+         * @return {@link Builder}
+         * @see CameraImageFormat
+         */
         public CameraConfig.Builder setImageFormat(@CameraImageFormat.SupportedImageFormat int imageFormat) {
             //Validate input
             if (imageFormat != CameraImageFormat.FORMAT_JPEG &&
@@ -76,11 +107,23 @@ public class CameraConfig {
             return this;
         }
 
+        /**
+         * Set the location of the out put image. If you do not set any file for the output image, by
+         * default image will be stored in the application's cache directory.
+         *
+         * @param imageFile {@link File} where you want to store the image.
+         * @return {@link Builder}
+         */
         public CameraConfig.Builder setImageFile(File imageFile) {
             mImageFile = imageFile;
             return this;
         }
 
+        /**
+         * Build the configuration.
+         *
+         * @return {@link CameraConfig}
+         */
         public CameraConfig build() {
             if (mImageFile == null) mImageFile = getDefaultStorageFile();
             return CameraConfig.this;
@@ -90,7 +133,7 @@ public class CameraConfig {
         private File getDefaultStorageFile() {
             return new File(HiddenCameraUtils.getCacheDir(mContext).getAbsolutePath()
                     + File.pathSeparator
-                    + "IMG_" + System.currentTimeMillis()
+                    + "IMG_" + System.currentTimeMillis()   //IMG_214515184113123.png
                     + (mImageFormat == CameraImageFormat.FORMAT_JPEG ? ".jpeg" : ".png"));
         }
     }
@@ -107,5 +150,7 @@ public class CameraConfig {
         return mImageFormat;
     }
 
-    File getImageFile(){return mImageFile;}
+    File getImageFile() {
+        return mImageFile;
+    }
 }

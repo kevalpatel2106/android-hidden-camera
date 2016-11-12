@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by Keval on 12-Nov-16.
- * All the constant fields for the camera configuration parameters.
+ * Supported output image resolutions.
  *
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
