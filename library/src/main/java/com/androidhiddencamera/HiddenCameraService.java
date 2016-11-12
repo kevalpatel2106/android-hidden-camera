@@ -106,7 +106,8 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
     private CameraPreview addPreView() {
         //create fake camera view
         CameraPreview cameraSourceCameraPreview = new CameraPreview(this, this);
-        cameraSourceCameraPreview.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        cameraSourceCameraPreview.setLayoutParams(new ViewGroup
+                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(1, 1,

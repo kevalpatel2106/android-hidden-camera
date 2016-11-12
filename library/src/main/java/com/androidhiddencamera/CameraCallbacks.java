@@ -16,8 +16,9 @@
 
 package com.androidhiddencamera;
 
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+
+import java.io.File;
 
 /**
  * Created by Keval on 14-Oct-16.
@@ -27,7 +28,7 @@ import android.support.annotation.NonNull;
 
 interface CameraCallbacks {
 
-    void onImageCapture(@NonNull Bitmap image);
+    void onImageCapture(@NonNull File imageFile);
 
     void onCameraError(@CameraError.CameraErrorCodes int errorCode);
 }

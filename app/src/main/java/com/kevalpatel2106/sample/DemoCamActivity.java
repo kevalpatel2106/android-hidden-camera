@@ -19,6 +19,7 @@ package com.kevalpatel2106.sample;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.androidhiddencamera.HiddenCameraActivity;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 
+import java.io.File;
+
 public class DemoCamActivity extends HiddenCameraActivity {
 
     private CameraConfig mCameraConfig;
@@ -43,7 +46,7 @@ public class DemoCamActivity extends HiddenCameraActivity {
         setContentView(R.layout.activity_hidden_cam);
 
         mCameraConfig = new CameraConfig()
-                .getBuilder()
+                .getBuilder(this)
                 .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
                 .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
@@ -84,10 +87,13 @@ public class DemoCamActivity extends HiddenCameraActivity {
     }
 
     @Override
-    public void onImageCapture(@NonNull Bitmap image) {
+    public void onImageCapture(@NonNull File imageFile) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
 
         //Display the image to the image view
-        ((ImageView)findViewById(R.id.cam_prev)).setImageBitmap(image);
+        ((ImageView)findViewById(R.id.cam_prev)).setImageBitmap(bitmap);
     }
 
     @Override

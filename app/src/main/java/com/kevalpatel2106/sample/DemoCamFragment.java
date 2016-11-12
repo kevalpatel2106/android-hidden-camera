@@ -19,6 +19,7 @@ package com.kevalpatel2106.sample;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,6 +36,8 @@ import com.androidhiddencamera.HiddenCameraFragment;
 import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
+
+import java.io.File;
 
 /**
  * Created by Keval on 11-Nov-16.
@@ -53,8 +56,9 @@ public class DemoCamFragment extends HiddenCameraFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hidden_cam, container, false);
 
+        //Setting camera configuration
         mCameraConfig = new CameraConfig()
-                .getBuilder()
+                .getBuilder(getActivity())
                 .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
                 .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
@@ -98,10 +102,13 @@ public class DemoCamFragment extends HiddenCameraFragment {
     }
 
     @Override
-    public void onImageCapture(@NonNull Bitmap image) {
+    public void onImageCapture(@NonNull File imageFile) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
 
         //Display the image to the image view
-        mImageView.setImageBitmap(image);
+        mImageView.setImageBitmap(bitmap);
     }
 
     @Override

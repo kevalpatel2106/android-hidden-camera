@@ -20,6 +20,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +35,8 @@ import com.androidhiddencamera.HiddenCameraService;
 import com.androidhiddencamera.HiddenCameraUtils;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
+
+import java.io.File;
 
 /**
  * Created by Keval on 11-Nov-16.
@@ -55,7 +58,7 @@ public class DemoCamService extends HiddenCameraService {
 
             if (HiddenCameraUtils.canOverDrawOtherApps(this)) {
                 CameraConfig cameraConfig = new CameraConfig()
-                        .getBuilder()
+                        .getBuilder(this)
                         .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
                         .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                         .setImageFormat(CameraImageFormat.FORMAT_JPEG)
@@ -82,8 +85,12 @@ public class DemoCamService extends HiddenCameraService {
     }
 
     @Override
-    public void onImageCapture(@NonNull Bitmap image) {
-        Log.d("Image capture", image.getByteCount() + "");
+    public void onImageCapture(@NonNull File imageFile) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+
+        Log.d("Image capture", imageFile.length() + "");
         stopSelf();
     }
 

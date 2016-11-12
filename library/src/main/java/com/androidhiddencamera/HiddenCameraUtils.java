@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 
+import java.io.File;
+
 /**
  * Created by Keval on 11-Nov-16.
  *
@@ -53,5 +55,9 @@ public class HiddenCameraUtils {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    static File getCacheDir(Context context) {
+        return context.getExternalCacheDir() == null ? context.getCacheDir() : context.getExternalCacheDir();
     }
 }
