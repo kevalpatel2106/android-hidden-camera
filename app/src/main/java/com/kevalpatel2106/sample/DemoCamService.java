@@ -27,10 +27,13 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.androidhiddencamera.CameraConfig;
 import com.androidhiddencamera.CameraError;
-import com.androidhiddencamera.CameraFacing;
+import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.HiddenCameraService;
 import com.androidhiddencamera.HiddenCameraUtils;
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraResolution;
 
 /**
  * Created by Keval on 11-Nov-16.
@@ -39,6 +42,7 @@ import com.androidhiddencamera.HiddenCameraUtils;
  */
 
 public class DemoCamService extends HiddenCameraService {
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,11 +51,17 @@ public class DemoCamService extends HiddenCameraService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
             if (HiddenCameraUtils.canOverDrawOtherApps(this)) {
-                startCamera(CameraFacing.FRONT_FACING_CAMERA);
+                CameraConfig cameraConfig = new CameraConfig()
+                        .getBuilder()
+                        .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                        .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
+                        .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                        .build();
+
+                startCamera(cameraConfig);
 
                 new android.os.Handler().postDelayed(new Runnable() {
                     @Override

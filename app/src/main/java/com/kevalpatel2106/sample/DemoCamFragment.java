@@ -29,9 +29,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.androidhiddencamera.CameraConfig;
 import com.androidhiddencamera.CameraError;
-import com.androidhiddencamera.CameraFacing;
 import com.androidhiddencamera.HiddenCameraFragment;
+import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraResolution;
 
 /**
  * Created by Keval on 11-Nov-16.
@@ -43,16 +46,25 @@ public class DemoCamFragment extends HiddenCameraFragment {
 
     private ImageView mImageView;
 
+    private CameraConfig mCameraConfig;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hidden_cam, container, false);
 
+        mCameraConfig = new CameraConfig()
+                .getBuilder()
+                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
+                .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .build();
+
         //Check for the camera permission for the runtime
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
             //Start camera preview
-            startCamera(CameraFacing.FRONT_FACING_CAMERA);
+            startCamera(mCameraConfig);
         } else {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 101);
         }
@@ -76,7 +88,7 @@ public class DemoCamFragment extends HiddenCameraFragment {
         if (requestCode == 101) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //noinspection MissingPermission
-                startCamera(CameraFacing.REAR_FACING_CAMERA);
+                startCamera(mCameraConfig);
             } else {
                 Toast.makeText(getActivity(), "Camera permission denied.", Toast.LENGTH_LONG).show();
             }

@@ -1,4 +1,4 @@
-package com.androidhiddencamera;
+package com.androidhiddencamera.config;
 
 import android.support.annotation.IntDef;
 
@@ -24,6 +24,6 @@ public class CameraImageFormat {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({FORMAT_JPEG, FORMAT_PNG})
-    @interface SupportedImageFormat {
+    public @interface SupportedImageFormat {
     }
 }

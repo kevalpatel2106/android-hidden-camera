@@ -1,4 +1,4 @@
-package com.androidhiddencamera;
+package com.androidhiddencamera.config;
 
 import android.hardware.Camera;
 import android.support.annotation.IntDef;
@@ -41,6 +41,6 @@ public class CameraResolution {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({HIGH_RESOLUTION, MEDIUM_RESOLUTION, LOW_RESOLUTION})
-    @interface SupportedResolution {
+    public @interface SupportedResolution {
     }
 }

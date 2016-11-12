@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.androidhiddencamera;
+package com.androidhiddencamera.config;
 
 import android.support.annotation.IntDef;
 
@@ -50,6 +50,6 @@ public class CameraFacing {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({REAR_FACING_CAMERA, FRONT_FACING_CAMERA})
-    @interface SupportedCameraFacing {
+    public @interface SupportedCameraFacing {
     }
 }

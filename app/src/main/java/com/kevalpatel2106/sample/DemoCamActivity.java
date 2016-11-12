@@ -26,22 +26,35 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.androidhiddencamera.CameraConfig;
 import com.androidhiddencamera.CameraError;
-import com.androidhiddencamera.CameraFacing;
+import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.HiddenCameraActivity;
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraResolution;
 
 public class DemoCamActivity extends HiddenCameraActivity {
+
+    private CameraConfig mCameraConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_cam);
 
+        mCameraConfig = new CameraConfig()
+                .getBuilder()
+                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
+                .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .build();
+
+
         //Check for the camera permission for the runtime
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 
             //Start camera preview
-            startCamera(CameraFacing.FRONT_FACING_CAMERA);
+            startCamera(mCameraConfig);
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 101);
         }
@@ -61,7 +74,7 @@ public class DemoCamActivity extends HiddenCameraActivity {
         if (requestCode == 101) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //noinspection MissingPermission
-                startCamera(CameraFacing.REAR_FACING_CAMERA);
+                startCamera(mCameraConfig);
             } else {
                 Toast.makeText(this, "Camera permission denied.", Toast.LENGTH_LONG).show();
             }

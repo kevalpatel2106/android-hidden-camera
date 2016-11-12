@@ -1,5 +1,9 @@
 package com.androidhiddencamera;
 
+import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraResolution;
+
 /**
  * Created by Keval on 12-Nov-16.
  *
@@ -17,10 +21,15 @@ public class CameraConfig {
     @CameraImageFormat.SupportedImageFormat
     private int mImageFormat = CameraImageFormat.FORMAT_JPEG;
 
-    private CameraConfig() {
+    public CameraConfig() {
     }
 
-    class Builder {
+    public Builder getBuilder(){
+        return new Builder();
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public class Builder {
 
         public CameraConfig.Builder setCameraResolution(@CameraResolution.SupportedResolution int resolution) {
 
