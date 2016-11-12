@@ -97,7 +97,7 @@ public class DemoCamActivity extends HiddenCameraActivity {
     }
 
     @Override
-    public void onCameraError(int errorCode) {
+    public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
         switch (errorCode) {
             case CameraError.ERROR_CAMERA_OPEN_FAILED:
                 //Camera open failed. Probably because another application
@@ -111,6 +111,9 @@ public class DemoCamActivity extends HiddenCameraActivity {
                 break;
             case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
                 //This error will never happen while hidden camera is used from activity or fragment
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
+                Toast.makeText(this, "Your device does not have front camera.", Toast.LENGTH_LONG).show();
                 break;
         }
     }

@@ -69,10 +69,21 @@ public class CameraError {
      */
     public static final int ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION = 3136;
 
+    /**
+     * If the device does not have front facing camera and application tries to capture image
+     * using front facing camera, this error will occur.
+     * <p>
+     * Developer can check if the device has
+     * front camera or not by using {@link HiddenCameraUtils#isFrontCameraAvailable(Context)}
+     * before initializing the camera.
+     */
+    public static final int ERROR_DOES_NOT_HAVE_FRONT_CAMERA = 8722;
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ERROR_CAMERA_PERMISSION_NOT_AVAILABLE,
             ERROR_CAMERA_OPEN_FAILED,
+            ERROR_DOES_NOT_HAVE_FRONT_CAMERA,
             ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION})
-    @interface CameraErrorCodes {
+    public @interface CameraErrorCodes {
     }
 }

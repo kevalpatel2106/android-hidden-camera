@@ -16,8 +16,11 @@
 
 package com.androidhiddencamera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -42,6 +45,7 @@ public class HiddenCameraUtils {
      * @return true if the permission is available.
      * @see 'http://www.androidpolice.com/2015/09/07/android-m-begins-locking-down-floating-apps-requires-users-to-grant-special-permission-to-draw-on-other-apps/'
      */
+    @SuppressLint("NewApi")
     public static boolean canOverDrawOtherApps(Context context) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
     }
@@ -68,5 +72,17 @@ public class HiddenCameraUtils {
     @NonNull
     static File getCacheDir(Context context) {
         return context.getExternalCacheDir() == null ? context.getCacheDir() : context.getExternalCacheDir();
+    }
+
+    /**
+     * Check if the device has front camera or not?
+     *
+     * @param context context
+     * @return true if the device has front camera.
+     */
+    @SuppressWarnings("deprecation")
+    public static boolean isFrontCameraAvailable(Context context) {
+        int numCameras = Camera.getNumberOfCameras();
+        return numCameras > 0 && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
     }
 }

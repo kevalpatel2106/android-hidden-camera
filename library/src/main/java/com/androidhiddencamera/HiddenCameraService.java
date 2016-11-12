@@ -27,6 +27,8 @@ import android.support.v4.app.ActivityCompat;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.androidhiddencamera.config.CameraFacing;
+
 /**
  * Created by Keval on 27-Oct-16.
  * This abstract class provides ability to handle background camera to the service in which it is
@@ -71,6 +73,10 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
 
             //Throw error if the camera permission not available
             onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
+        } else if (cameraConfig.getFacing() == CameraFacing.FRONT_FACING_CAMERA
+                && !HiddenCameraUtils.isFrontCameraAvailable(this)) {   //Check if for the front camera
+
+            onCameraError(CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA);
         } else {
 
             //Add the camera preview surface to the root of the activity view.

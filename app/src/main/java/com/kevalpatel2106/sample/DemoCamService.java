@@ -30,9 +30,9 @@ import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
 import com.androidhiddencamera.CameraError;
-import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.HiddenCameraService;
 import com.androidhiddencamera.HiddenCameraUtils;
+import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 
@@ -95,7 +95,7 @@ public class DemoCamService extends HiddenCameraService {
     }
 
     @Override
-    public void onCameraError(int errorCode) {
+    public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
         switch (errorCode) {
             case CameraError.ERROR_CAMERA_OPEN_FAILED:
                 //Camera open failed. Probably because another application
@@ -111,6 +111,9 @@ public class DemoCamService extends HiddenCameraService {
                 //Display information dialog to the user with steps to grant "Draw over other app"
                 //permission for the app.
                 HiddenCameraUtils.openDrawOverPermissionSetting(this);
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
+                Toast.makeText(this, "Your device does not have front camera.", Toast.LENGTH_LONG).show();
                 break;
         }
 

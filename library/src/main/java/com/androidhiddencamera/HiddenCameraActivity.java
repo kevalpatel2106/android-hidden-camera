@@ -29,6 +29,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.androidhiddencamera.config.CameraFacing;
+
 /**
  * Created by Keval on 27-Oct-16.
  * This abstract class provides ability to handle background camera to the activity in which it is
@@ -65,13 +67,17 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
      */
     @RequiresPermission(Manifest.permission.CAMERA)
     public void startCamera(CameraConfig cameraConfig) {
-        //check if the camera permission is available
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
-            return;
-        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) { //check if the camera permission is available
 
-        mCameraPreview.startPreview(cameraConfig);
+            onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
+        } else if (cameraConfig.getFacing() == CameraFacing.FRONT_FACING_CAMERA
+                && !HiddenCameraUtils.isFrontCameraAvailable(this)) {   //Check if for the front camera
+
+            onCameraError(CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA);
+        } else {
+            mCameraPreview.startPreview(cameraConfig);
+        }
     }
 
     /**

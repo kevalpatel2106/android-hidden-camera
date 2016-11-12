@@ -27,6 +27,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.androidhiddencamera.config.CameraFacing;
+
 /**
  * Created by Keval on 27-Oct-16.
  * This abstract class provides ability to handle background camera to the fragment in which it is
@@ -56,15 +58,19 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
     @RequiresPermission(Manifest.permission.CAMERA)
     public void startCamera(CameraConfig cameraConfig) {
 
-        //check if the camera permission is available
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
-            return;
-        }
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) { //check if the camera permission is available
 
-        //Add the camera preview surface to the root of the activity view.
-        if (mCameraPreview == null) mCameraPreview = addPreView();
-        mCameraPreview.startPreview(cameraConfig);
+            onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
+        } else if (cameraConfig.getFacing() == CameraFacing.FRONT_FACING_CAMERA
+                && !HiddenCameraUtils.isFrontCameraAvailable(getActivity())) {   //Check if for the front camera
+
+            onCameraError(CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA);
+        } else {
+            //Add the camera preview surface to the root of the activity view.
+            if (mCameraPreview == null) mCameraPreview = addPreView();
+            mCameraPreview.startPreview(cameraConfig);
+        }
     }
 
     /**

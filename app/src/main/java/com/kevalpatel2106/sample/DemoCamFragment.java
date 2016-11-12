@@ -112,20 +112,26 @@ public class DemoCamFragment extends HiddenCameraFragment {
     }
 
     @Override
-    public void onCameraError(int errorCode) {
+    public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
         switch (errorCode) {
             case CameraError.ERROR_CAMERA_OPEN_FAILED:
                 //Camera open failed. Probably because another application
                 //is using the camera
-                Toast.makeText(getActivity(), "Cannot open camera.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Cannot open camera.",
+                        Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
                 //camera permission is not available
-                //Ask for the camra permission before initializing it.
-                Toast.makeText(getActivity(), "Camera permission not available.", Toast.LENGTH_LONG).show();
+                //Ask for the camera permission before initializing it.
+                Toast.makeText(getActivity(), "Camera permission not available.",
+                        Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:
                 //This error will never happen while hidden camera is used from activity or fragment
+                break;
+            case CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA:
+                Toast.makeText(getActivity(), "Your device does not have front camera.",
+                        Toast.LENGTH_LONG).show();
                 break;
         }
     }
