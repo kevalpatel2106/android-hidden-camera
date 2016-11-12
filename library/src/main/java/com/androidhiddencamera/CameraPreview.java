@@ -16,15 +16,14 @@
 
 package com.androidhiddencamera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.support.annotation.NonNull;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,11 +35,14 @@ import java.util.List;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+@SuppressLint("ViewConstructor")
+class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     private CameraCallbacks mHiddenCameraActivity;
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
+
+    private CameraConfig mCameraConfig;
 
     private boolean safeToTakePicture = false;
 
@@ -79,9 +81,29 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // Now that the size is known, set up the camera parameters and begin the preview.
         Camera.Parameters parameters = mCamera.getParameters();
 
-        List<Camera.Size> previewSizes = mCamera.getParameters().getSupportedPictureSizes();
-        parameters.setPreviewSize(previewSizes.get(previewSizes.size() - 1).width,
-                previewSizes.get(previewSizes.size() - 1).height);
+        List<Camera.Size> pictureSizes = mCamera.getParameters().getSupportedPictureSizes();
+
+        //set the preview sizes that are the lowest, as we don't have to display the preview.
+        parameters.setPreviewSize(pictureSizes.get(pictureSizes.size() - 1).width,
+                pictureSizes.get(pictureSizes.size() - 1).height);
+
+        //set the camera image size based on config provided
+        Camera.Size cameraSize;
+        switch (mCameraConfig.getResolution()) {
+            case CameraResolution.HIGH_RESOLUTION:
+                cameraSize = pictureSizes.get(0);   //Highest res
+                break;
+            case CameraResolution.MEDIUM_RESOLUTION:
+                cameraSize = pictureSizes.get(pictureSizes.size() / 2);     //Resolution at the middle
+                break;
+            case CameraResolution.LOW_RESOLUTION:
+                cameraSize = pictureSizes.get(pictureSizes.size() - 1);       //Lowest res
+                break;
+            default:
+                throw new RuntimeException("Invalid camera resolution.");
+        }
+        parameters.setPictureSize(cameraSize.width, cameraSize.height);
+
         requestLayout();
         mCamera.setParameters(parameters);
 
@@ -102,10 +124,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     /**
      * Initialize the camera and start the preview of the camera.
      *
-     * @param id camera id.
+     * @param cameraConfig camera config builder.
      */
-    void startPreview(int id) {
-        if (safeCameraOpen(id)) {
+    void startPreview(@NonNull CameraConfig cameraConfig) {
+        mCameraConfig = cameraConfig;
+
+        if (safeCameraOpen(mCameraConfig.getFacing())) {
             if (mCamera != null) {
                 requestLayout();
 

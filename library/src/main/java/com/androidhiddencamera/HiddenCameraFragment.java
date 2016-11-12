@@ -18,13 +18,9 @@ package com.androidhiddencamera;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -55,32 +51,25 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
      * Start the hidden camera. Make sure that you check for the runtime permissions before you start
      * the camera.
      *
-     * @param cameraFacing Front or rear facing camera id from {@link CameraFacing}
+     * @param cameraConfig camera configuration {@link CameraConfig}
      */
     @RequiresPermission(Manifest.permission.CAMERA)
-    public void startCamera(@CameraFacing.SupportedCameraFacing int cameraFacing) {
+    public void startCamera(CameraConfig cameraConfig) {
 
-        //validate if the correct id is provided.
-        if (cameraFacing == CameraFacing.FRONT_FACING_CAMERA || cameraFacing == CameraFacing.REAR_FACING_CAMERA) {
-
-            //check if the camera permission is available
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
-                return;
-            }
-
-            //Add the camera preview surface to the root of the activity view.
-            if (mCameraPreview == null) mCameraPreview = addPreView();
-
-            mCameraPreview.startPreview(cameraFacing);
-        } else {
-            throw new IllegalArgumentException("Invalid camera facing value.");
+        //check if the camera permission is available
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
+            return;
         }
+
+        //Add the camera preview surface to the root of the activity view.
+        if (mCameraPreview == null) mCameraPreview = addPreView();
+        mCameraPreview.startPreview(cameraConfig);
     }
 
     /**
      * Call this method to capture the image using the camera you initialized. Don't forget to
-     * initialize the camera using {@link #startCamera(int)} before using this function.
+     * initialize the camera using {@link #startCamera(CameraConfig)} before using this function.
      */
     public void takePicture() {
         if (mCameraPreview != null && mCameraPreview.isSafeToTakePictureInternal()) {

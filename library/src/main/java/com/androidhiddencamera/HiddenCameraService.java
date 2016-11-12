@@ -22,8 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.view.ViewGroup;
@@ -60,18 +58,14 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
      * <B>Note: </B>Developer has to check if the "Draw over other apps" permission is available by
      * calling {@link HiddenCameraUtils#canOverDrawOtherApps(Context)} before staring the camera.
      *
-     * @param cameraFacing Front or rear facing camera id from {@link CameraFacing}
+     * @param cameraConfig camera configuration {@link CameraConfig}
      */
     @RequiresPermission(allOf = {Manifest.permission.CAMERA, Manifest.permission.SYSTEM_ALERT_WINDOW})
-    public void startCamera(@CameraFacing.SupportedCameraFacing int cameraFacing) {
+    public void startCamera(CameraConfig cameraConfig) {
 
         if (!HiddenCameraUtils.canOverDrawOtherApps(this)) {    //Check if the draw over other app permission is available.
 
             onCameraError(CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION);
-        } else if (cameraFacing != CameraFacing.FRONT_FACING_CAMERA
-                && cameraFacing != CameraFacing.REAR_FACING_CAMERA) {   //validate if the correct id is provided.
-
-            throw new IllegalArgumentException("Invalid camera facing value.");
         } else if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) { //check if the camera permission is available
 
@@ -81,13 +75,13 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
 
             //Add the camera preview surface to the root of the activity view.
             if (mCameraPreview == null) mCameraPreview = addPreView();
-            mCameraPreview.startPreview(cameraFacing);
+            mCameraPreview.startPreview(cameraConfig);
         }
     }
 
     /**
      * Call this method to capture the image using the camera you initialized. Don't forget to
-     * initialize the camera using {@link #startCamera(int)} before using this function.
+     * initialize the camera using {@link #startCamera(CameraConfig)} before using this function.
      */
     public void takePicture() {
         if (mCameraPreview != null && mCameraPreview.isSafeToTakePictureInternal()) {

@@ -61,29 +61,22 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
      * Start the hidden camera. Make sure that you check for the runtime permissions before you start
      * the camera.
      *
-     * @param cameraFacing Front or rear facing camera id from {@link CameraFacing}
+     * @param cameraConfig camera configuration {@link CameraConfig}
      */
     @RequiresPermission(Manifest.permission.CAMERA)
-    public void startCamera(@CameraFacing.SupportedCameraFacing int cameraFacing) {
-
-        //validate if the correct id is provided.
-        if (cameraFacing == CameraFacing.FRONT_FACING_CAMERA || cameraFacing == CameraFacing.REAR_FACING_CAMERA) {
-
-            //check if the camera permission is available
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
-                return;
-            }
-
-            mCameraPreview.startPreview(cameraFacing);
-        } else {
-            throw new IllegalArgumentException("Invalid camera facing value.");
+    public void startCamera(CameraConfig cameraConfig) {
+        //check if the camera permission is available
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            onCameraError(CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE);
+            return;
         }
+
+        mCameraPreview.startPreview(cameraConfig);
     }
 
     /**
      * Call this method to capture the image using the camera you initialized. Don't forget to
-     * initialize the camera using {@link #startCamera(int)} before using this function.
+     * initialize the camera using {@link #startCamera(CameraConfig)} before using this function.
      */
     public void takePicture() {
         if (mCameraPreview != null && mCameraPreview.isSafeToTakePictureInternal()) {

@@ -17,6 +17,10 @@
 package com.androidhiddencamera;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by Keval on 10-Nov-16.
@@ -26,6 +30,10 @@ import android.content.Context;
  */
 
 public class CameraError {
+
+    private CameraError() {
+        throw new RuntimeException("Cannot initiate CameraError.");
+    }
 
     /**
      * This error can occur if there is any error while opening camera. Mostly because another
@@ -45,14 +53,14 @@ public class CameraError {
      * This permission is available to all the application below Android M (<API 23).
      * But for the API 23 and above user has to enable it manually, if the permission is not
      * available by opening Settings -> Apps -> Gear icon on top-right corner -> Draw Over other apps.
-     *
+     * <p>
      * This error can occur only while using the hidden camera from the service using {@link HiddenCameraService}.
      * Developer should check if the {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW} permission
      * is defined in the AndroidManifest.xml and display information dialog/snackbar to the
      * user, explaining steps to grant draw over other app permission.
-     *
+     * <p>
      * Developer can open permission grant screen using {@link HiddenCameraUtils#openDrawOverPermissionSetting(Context)}.
-     *
+     * <p>
      * <B>Note:</B> This error will stop the service. Developer has to start service once
      * "Draw over other app" permission is granted. You can check if the permission is available by
      * calling {@link HiddenCameraUtils#canOverDrawOtherApps(Context)}.
@@ -60,4 +68,11 @@ public class CameraError {
      * @see 'http://www.androidpolice.com/2015/09/07/android-m-begins-locking-down-floating-apps-requires-users-to-grant-special-permission-to-draw-on-other-apps/'
      */
     public static final int ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION = 3136;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ERROR_CAMERA_PERMISSION_NOT_AVAILABLE,
+            ERROR_CAMERA_OPEN_FAILED,
+            ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION})
+    @interface CameraErrorCodes {
+    }
 }

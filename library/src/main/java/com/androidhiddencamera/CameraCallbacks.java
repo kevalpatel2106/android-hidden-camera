@@ -29,5 +29,5 @@ interface CameraCallbacks {
 
     void onImageCapture(@NonNull Bitmap image);
 
-    void onCameraError(int errorCode);
+    void onCameraError(@CameraError.CameraErrorCodes int errorCode);
 }
