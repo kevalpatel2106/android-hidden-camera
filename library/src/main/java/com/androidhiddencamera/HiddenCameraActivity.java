@@ -76,7 +76,7 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
 
             onCameraError(CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA);
         } else {
-            mCameraPreview.startPreview(cameraConfig);
+            mCameraPreview.startCameraInternal(cameraConfig);
         }
     }
 

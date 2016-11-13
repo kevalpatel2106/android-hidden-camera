@@ -132,7 +132,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
      *
      * @param cameraConfig camera config builder.
      */
-    void startPreview(@NonNull CameraConfig cameraConfig) {
+    void startCameraInternal(@NonNull CameraConfig cameraConfig) {
         mCameraConfig = cameraConfig;
 
         if (safeCameraOpen(mCameraConfig.getFacing())) {

@@ -69,7 +69,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
         } else {
             //Add the camera preview surface to the root of the activity view.
             if (mCameraPreview == null) mCameraPreview = addPreView();
-            mCameraPreview.startPreview(cameraConfig);
+            mCameraPreview.startCameraInternal(cameraConfig);
         }
     }
 
