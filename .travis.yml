@@ -5,6 +5,7 @@ sudo: false
 notifications:
     email:
         - kevalpatel2106@gmail.com
+        - slack: kevalpatel2106:c0E0IbBDRy5JEYoOduYSPR6d
         
 env:
     global:
