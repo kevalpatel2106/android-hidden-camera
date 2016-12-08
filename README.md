@@ -17,7 +17,7 @@ dependencies {
 Step-1: Inherit the builtin class.
 
 |       Component       |              Class to inherit              |                             Sample                          |
-|-----------------------|:------------------------------------------:|-----------------0------------------------------------------:|
+|-----------------------|:------------------------------------------:|------------------------------------------------------------:|
 |Activity               |com.androidhiddencamera.HiddenCameraActivity|`public class DemoCamActivity extends HiddenCameraActivity {`|
 |Fragment               |com.androidhiddencamera.HiddenCameraFragment|`public class DemoCamFragment extends HiddenCameraFragment {`|
 |Service                |com.androidhiddencamera.HiddenCameraService |`public class DemoCamService extends HiddenCameraService {`  |
