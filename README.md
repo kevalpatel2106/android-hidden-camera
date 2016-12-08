@@ -92,3 +92,16 @@ public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
 ```
 
 ####That's it.
+
+##Demo
+- You can download the sample apk from [here](/apk/sample.apk).
+
+##Contribute:
+####Simple 3 step to contribute into this repo:
+
+1. Fork the project.
+2. Make required changes and commit.
+3. Generate pull request. Mention all the required description regarding changes you made.
+
+## Questions
+If you have any questions you can hit me at Twitter [@Kevalonly77](https://twitter.com/Kevalonly77)
