@@ -95,6 +95,7 @@ public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
 
 ##Demo
 - You can download the sample apk from [here](/apk/sample.apk).
+- ![sample](/apk/sample.png)
 
 ##Contribute:
 ####Simple 3 step to contribute into this repo:
