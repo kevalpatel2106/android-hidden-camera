@@ -88,10 +88,11 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         Camera.Parameters parameters = mCamera.getParameters();
 
         List<Camera.Size> pictureSizes = mCamera.getParameters().getSupportedPictureSizes();
-
-        //set the preview sizes that are the lowest, as we don't have to display the preview.
-        parameters.setPreviewSize(pictureSizes.get(pictureSizes.size() - 1).width,
-                pictureSizes.get(pictureSizes.size() - 1).height);
+//        List<Camera.Size> previewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+//
+//        //set the preview sizes that are the lowest, as we don't have to display the preview.
+//        parameters.setPreviewSize(previewSizes.get(previewSizes.size() - 1).width,
+//                previewSizes.get(previewSizes.size() - 1).height);
 
         //set the camera image size based on config provided
         Camera.Size cameraSize;

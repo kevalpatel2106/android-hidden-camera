@@ -37,7 +37,6 @@ public class CameraConfig {
         return new Builder();
     }
 
-    @SuppressWarnings("WeakerAccess")
     public class Builder {
 
         /**

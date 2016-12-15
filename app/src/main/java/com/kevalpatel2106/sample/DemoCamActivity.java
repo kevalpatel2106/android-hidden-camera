@@ -48,7 +48,7 @@ public class DemoCamActivity extends HiddenCameraActivity {
         mCameraConfig = new CameraConfig()
                 .getBuilder(this)
                 .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
-                .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
+                .setCameraResolution(CameraResolution.HIGH_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
                 .build();
 
