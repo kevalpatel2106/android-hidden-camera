@@ -177,30 +177,34 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     void takePictureInternal() {
-        mCamera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] bytes, Camera camera) {
+        if (mCamera != null) {
+            mCamera.takePicture(null, null, new Camera.PictureCallback() {
+                @Override
+                public void onPictureTaken(byte[] bytes, Camera camera) {
 
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(mCameraConfig.getImageFile());
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    bitmap.compress(mCameraConfig.getImageFormat() == ImageFormat.JPEG
-                                    ? Bitmap.CompressFormat.JPEG : Bitmap.CompressFormat.PNG,
-                            100, fos);
-                    mHiddenCameraActivity.onImageCapture(mCameraConfig.getImageFile());
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
+                    FileOutputStream fos = null;
                     try {
-                        if (fos != null) fos.close();
-                    } catch (IOException e) {
+                        fos = new FileOutputStream(mCameraConfig.getImageFile());
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        bitmap.compress(mCameraConfig.getImageFormat() == ImageFormat.JPEG
+                                        ? Bitmap.CompressFormat.JPEG : Bitmap.CompressFormat.PNG,
+                                100, fos);
+                        mHiddenCameraActivity.onImageCapture(mCameraConfig.getImageFile());
+                    } catch (FileNotFoundException e) {
                         e.printStackTrace();
+                    } finally {
+                        try {
+                            if (fos != null) fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
 
-            }
-        });
+                }
+            });
+        }else {
+            mHiddenCameraActivity.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
+        }
     }
 
     /**
