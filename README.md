@@ -9,7 +9,7 @@ This library allows application to take the picture using the device camera with
 ##Gradle Dependency:
 ```
 dependencies {
-    compile 'com.kevalpatel2106:hiddencamera:1.2'
+    compile 'com.kevalpatel2106:hiddencamera:1.2.1'
 }
 ```
 
