@@ -29,25 +29,19 @@ import java.lang.annotation.RetentionPolicy;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public class CameraError {
-
-    private CameraError() {
-        throw new RuntimeException("Cannot initiate CameraError.");
-    }
+public final class CameraError {
 
     /**
      * This error can occur if there is any error while opening camera. Mostly because another
      * application is using the camera.
      */
     public static final int ERROR_CAMERA_OPEN_FAILED = 1122;
-
     /**
      * This error wil occur if the camera permission is not available. Developer should ask user for
      * the runtime permission and once the permission granted, should try the to initialize the camera
      * again.
      */
     public static final int ERROR_CAMERA_PERMISSION_NOT_AVAILABLE = 5472;
-
     /**
      * If the application does not have draw over other app permission, error will occur.
      * This permission is available to all the application below Android M (<API 23).
@@ -68,7 +62,6 @@ public class CameraError {
      * @see 'http://www.androidpolice.com/2015/09/07/android-m-begins-locking-down-floating-apps-requires-users-to-grant-special-permission-to-draw-on-other-apps/'
      */
     public static final int ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION = 3136;
-
     /**
      * If the device does not have front facing camera and application tries to capture image
      * using front facing camera, this error will occur.
@@ -78,12 +71,22 @@ public class CameraError {
      * before initializing the camera.
      */
     public static final int ERROR_DOES_NOT_HAVE_FRONT_CAMERA = 8722;
+    /**
+     * This error code will be generated when application is not able to write the captured image into
+     * output file provide.
+     */
+    public static final int ERROR_IMAGE_WRITE_FAILED = 9854;
+
+    private CameraError() {
+        throw new RuntimeException("Cannot initiate CameraError.");
+    }
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ERROR_CAMERA_PERMISSION_NOT_AVAILABLE,
             ERROR_CAMERA_OPEN_FAILED,
             ERROR_DOES_NOT_HAVE_FRONT_CAMERA,
-            ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION})
+            ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION,
+            ERROR_IMAGE_WRITE_FAILED})
     public @interface CameraErrorCodes {
     }
 }

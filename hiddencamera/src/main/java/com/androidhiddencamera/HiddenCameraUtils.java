@@ -20,12 +20,20 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
+
+import com.androidhiddencamera.config.CameraImageFormat;
+import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by Keval on 11-Nov-16.
@@ -34,7 +42,7 @@ import java.io.File;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public class HiddenCameraUtils {
+public final class HiddenCameraUtils {
 
     /**
      * Check if the application has "Draw over other app" permission? This permission is available to all
@@ -81,8 +89,66 @@ public class HiddenCameraUtils {
      * @return true if the device has front camera.
      */
     @SuppressWarnings("deprecation")
-    public static boolean isFrontCameraAvailable(Context context) {
+    public static boolean isFrontCameraAvailable(@NonNull Context context) {
         int numCameras = Camera.getNumberOfCameras();
         return numCameras > 0 && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
+    }
+
+
+    /**
+     * Rotate the bitmap by 90 degree.
+     *
+     * @param bitmap original bitmap
+     * @return rotated bitmap
+     */
+    @WorkerThread
+    static Bitmap rotateBitmap(@NonNull Bitmap bitmap, @CameraRotation.SupportedRotation int rotation) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotation);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    /**
+     * Save image to the file.
+     *
+     * @param bitmap     bitmap to store.
+     * @param fileToSave file where bitmap should stored
+     */
+    static boolean saveImageFromFile(@NonNull Bitmap bitmap,
+                                     @NonNull File fileToSave,
+                                     @CameraImageFormat.SupportedImageFormat int imageFormat) {
+        FileOutputStream out = null;
+        boolean isSuccess = false;
+
+        //Decide the image format
+        Bitmap.CompressFormat compressFormat;
+        switch (imageFormat) {
+            case CameraImageFormat.FORMAT_JPEG:
+                compressFormat = Bitmap.CompressFormat.JPEG;
+                break;
+            case CameraImageFormat.FORMAT_WEBP:
+                compressFormat = Bitmap.CompressFormat.WEBP;
+                break;
+            case CameraImageFormat.FORMAT_PNG:
+            default:
+                compressFormat = Bitmap.CompressFormat.PNG;
+        }
+
+        try {
+            if (!fileToSave.exists()) fileToSave.createNewFile();
+            out = new FileOutputStream(fileToSave);
+            bitmap.compress(compressFormat, 100, out); // bmp is your Bitmap instance
+            isSuccess = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            isSuccess = false;
+        } finally {
+            try {
+                if (out != null) out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return isSuccess;
     }
 }

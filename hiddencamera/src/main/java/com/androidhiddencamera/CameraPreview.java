@@ -20,7 +20,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -28,9 +27,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -180,25 +178,28 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         mCamera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
+                //Convert byte array to bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(mCameraConfig.getImageFile());
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    bitmap.compress(mCameraConfig.getImageFormat() == ImageFormat.JPEG
-                                    ? Bitmap.CompressFormat.JPEG : Bitmap.CompressFormat.PNG,
-                            100, fos);
-                    mHiddenCameraActivity.onImageCapture(mCameraConfig.getImageFile());
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (fos != null) fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                //Rotate the bitmap
+                Bitmap rotatedBitmap;
+                if (mCameraConfig.getmImageRotation() != CameraRotation.ROTATION_0) {
+                    rotatedBitmap = HiddenCameraUtils.rotateBitmap(bitmap, mCameraConfig.getmImageRotation());
+
+                    //noinspection UnusedAssignment
+                    bitmap = null;
+                } else {
+                    rotatedBitmap = bitmap;
                 }
 
+                //Save image to the file.
+                if (HiddenCameraUtils.saveImageFromFile(rotatedBitmap,
+                        mCameraConfig.getImageFile(),
+                        mCameraConfig.getImageFormat())) {
+                    mHiddenCameraActivity.onImageCapture(mCameraConfig.getImageFile());
+                } else {
+                    mHiddenCameraActivity.onCameraError(CameraError.ERROR_IMAGE_WRITE_FAILED);
+                }
             }
         });
     }

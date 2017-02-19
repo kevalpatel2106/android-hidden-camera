@@ -20,19 +20,20 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
 import com.androidhiddencamera.CameraError;
-import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.HiddenCameraActivity;
+import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
 
@@ -50,6 +51,7 @@ public class DemoCamActivity extends HiddenCameraActivity {
                 .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
                 .setCameraResolution(CameraResolution.HIGH_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .setImageRotation(CameraRotation.ROTATION_270)
                 .build();
 
 

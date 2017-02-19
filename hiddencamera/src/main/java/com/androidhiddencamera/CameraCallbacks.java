@@ -25,7 +25,6 @@ import java.io.File;
  *
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
-
 interface CameraCallbacks {
 
     void onImageCapture(@NonNull File imageFile);

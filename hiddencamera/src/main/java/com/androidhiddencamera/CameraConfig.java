@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
 
@@ -27,6 +28,9 @@ public class CameraConfig {
     @CameraImageFormat.SupportedImageFormat
     private int mImageFormat = CameraImageFormat.FORMAT_JPEG;
 
+    @CameraRotation.SupportedRotation
+    private int mImageRotation = CameraRotation.ROTATION_0;
+
     private File mImageFile;
 
     public CameraConfig() {
@@ -35,6 +39,30 @@ public class CameraConfig {
     public Builder getBuilder(Context context) {
         mContext = context;
         return new Builder();
+    }
+
+    @CameraResolution.SupportedResolution
+    int getResolution() {
+        return mResolution;
+    }
+
+    @CameraFacing.SupportedCameraFacing
+    int getFacing() {
+        return mFacing;
+    }
+
+    @CameraImageFormat.SupportedImageFormat
+    int getImageFormat() {
+        return mImageFormat;
+    }
+
+    File getImageFile() {
+        return mImageFile;
+    }
+
+    @CameraRotation.SupportedRotation
+    int getmImageRotation() {
+        return mImageRotation;
     }
 
     public class Builder {
@@ -107,6 +135,31 @@ public class CameraConfig {
         }
 
         /**
+         * Specify the output image rotation. The output image will be rotated by amount of degree specified
+         * before stored to the output file. By default there is no rotation applied.
+         *
+         * @param rotation Any supported rotation from:
+         *                 <li>{@link CameraRotation#ROTATION_0}</li>
+         *                 <li>{@link CameraRotation#ROTATION_90}</li>
+         *                 <li>{@link CameraRotation#ROTATION_180}</li>
+         *                 <li>{@link CameraRotation#ROTATION_270}</li>
+         * @return {@link Builder}
+         * @see CameraRotation
+         */
+        public CameraConfig.Builder setImageRotation(@CameraRotation.SupportedRotation int rotation) {
+            //Validate input
+            if (rotation != CameraRotation.ROTATION_0
+                    && rotation != CameraRotation.ROTATION_90
+                    && rotation != CameraRotation.ROTATION_180
+                    && rotation != CameraRotation.ROTATION_270) {
+                throw new RuntimeException("Invalid image rotation.");
+            }
+
+            mImageRotation = rotation;
+            return this;
+        }
+
+        /**
          * Set the location of the out put image. If you do not set any file for the output image, by
          * default image will be stored in the application's cache directory.
          *
@@ -135,21 +188,5 @@ public class CameraConfig {
                     + "IMG_" + System.currentTimeMillis()   //IMG_214515184113123.png
                     + (mImageFormat == CameraImageFormat.FORMAT_JPEG ? ".jpeg" : ".png"));
         }
-    }
-
-    int getResolution() {
-        return mResolution;
-    }
-
-    int getFacing() {
-        return mFacing;
-    }
-
-    int getImageFormat() {
-        return mImageFormat;
-    }
-
-    File getImageFile() {
-        return mImageFile;
     }
 }
