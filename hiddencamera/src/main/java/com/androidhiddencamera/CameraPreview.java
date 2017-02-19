@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -41,7 +42,7 @@ import java.util.List;
 
 @SuppressLint("ViewConstructor")
 class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private CameraCallbacks mHiddenCameraActivity;
+    private CameraCallbacks mCameraCallbacks;
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
@@ -53,7 +54,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     CameraPreview(@NonNull Context context, CameraCallbacks cameraCallbacks) {
         super(context);
 
-        mHiddenCameraActivity = cameraCallbacks;
+        mCameraCallbacks = cameraCallbacks;
 
         //Set surface holder
         mHolder = getHolder();
@@ -74,7 +75,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
             mCamera.startPreview();
         } catch (IOException e) {
             // left blank for now
-            mHiddenCameraActivity.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
+            mCameraCallbacks.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
         }
     }
 
@@ -146,11 +147,11 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
                 } catch (IOException e) {
                     e.printStackTrace();
 
-                    mHiddenCameraActivity.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
+                    mCameraCallbacks.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
                 }
             }
         } else {
-            mHiddenCameraActivity.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
+            mCameraCallbacks.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
         }
     }
 
@@ -175,33 +176,54 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     void takePictureInternal() {
-        mCamera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] bytes, Camera camera) {
-                //Convert byte array to bitmap
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if (mCamera != null) {
+            mCamera.takePicture(null, null, new Camera.PictureCallback() {
+                @Override
+                public void onPictureTaken(final byte[] bytes, Camera camera) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Convert byte array to bitmap
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                //Rotate the bitmap
-                Bitmap rotatedBitmap;
-                if (mCameraConfig.getmImageRotation() != CameraRotation.ROTATION_0) {
-                    rotatedBitmap = HiddenCameraUtils.rotateBitmap(bitmap, mCameraConfig.getmImageRotation());
+                            //Rotate the bitmap
+                            Bitmap rotatedBitmap;
+                            if (mCameraConfig.getmImageRotation() != CameraRotation.ROTATION_0) {
+                                rotatedBitmap = HiddenCameraUtils.rotateBitmap(bitmap, mCameraConfig.getmImageRotation());
 
-                    //noinspection UnusedAssignment
-                    bitmap = null;
-                } else {
-                    rotatedBitmap = bitmap;
+                                //noinspection UnusedAssignment
+                                bitmap = null;
+                            } else {
+                                rotatedBitmap = bitmap;
+                            }
+
+                            //Save image to the file.
+                            if (HiddenCameraUtils.saveImageFromFile(rotatedBitmap,
+                                    mCameraConfig.getImageFile(),
+                                    mCameraConfig.getImageFormat())) {
+                                //Post image file to the main thread
+                                new android.os.Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mCameraCallbacks.onImageCapture(mCameraConfig.getImageFile());
+                                    }
+                                });
+                            } else {
+                                //Post error to the main thread
+                                new android.os.Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mCameraCallbacks.onCameraError(CameraError.ERROR_IMAGE_WRITE_FAILED);
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
                 }
-
-                //Save image to the file.
-                if (HiddenCameraUtils.saveImageFromFile(rotatedBitmap,
-                        mCameraConfig.getImageFile(),
-                        mCameraConfig.getImageFormat())) {
-                    mHiddenCameraActivity.onImageCapture(mCameraConfig.getImageFile());
-                } else {
-                    mHiddenCameraActivity.onCameraError(CameraError.ERROR_IMAGE_WRITE_FAILED);
-                }
-            }
-        });
+            });
+        } else {
+            mCameraCallbacks.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
+        }
     }
 
     /**
