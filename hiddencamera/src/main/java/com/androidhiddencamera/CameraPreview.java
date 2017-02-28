@@ -73,7 +73,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
             mCamera.setDisplayOrientation(90);
             mCamera.setPreviewDisplay(surfaceHolder);
             mCamera.startPreview();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             // left blank for now
             mCameraCallbacks.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
         }
