@@ -1,19 +1,18 @@
 # Android Hidden Camera
-========================
 [![Twitter](https://img.shields.io/badge/Twitter-@Kevalonly77-blue.svg?style=flat)](https://twitter.com/Kevalonly77)
 [![Build Status](https://travis-ci.org/kevalpatel2106/android-hidden-camera.svg?branch=master)](https://travis-ci.org/kevalpatel2106/android-hidden-camera) [ ![Download](https://api.bintray.com/packages/kevalpatel2106/maven/android-hidden-camera/images/download.svg) ](https://bintray.com/kevalpatel2106/maven/android-hidden-camera/_latestVersion)
 
-##What is this library for?
+## What is this library for?
 This library allows application to take the picture using the device camera without showing the preview of it. Any application can capture the image from front or rear camera from the background service and this library will handle all the complexity on behalf of the application. You can capture images from activity, fragment and **even from the background service** using this library.
 
-##Gradle Dependency:
+## Gradle Dependency:
 ```
 dependencies {
     compile 'com.kevalpatel2106:hiddencamera:1.3'
 }
 ```
 
-##How to integrate?
+## How to integrate?
 
 Step-1: Inherit the builtin class.
 
@@ -92,14 +91,14 @@ public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
 }
 ```
 
-####That's it.
+#### That's it.
 
-##Demo
+## Demo
 - You can download the sample apk from [here](/apk/sample.apk).
 - ![sample](/apk/sample.png)
 
-##Contribute:
-####Simple 3 step to contribute into this repo:
+## Contribute:
+#### Simple 3 step to contribute into this repo:
 
 1. Fork the project.
 2. Make required changes and commit.
