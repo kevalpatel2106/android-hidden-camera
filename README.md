@@ -1,5 +1,4 @@
 # Android Hidden Camera
-[![Twitter](https://img.shields.io/badge/Twitter-@Kevalonly77-blue.svg?style=flat)](https://twitter.com/Kevalonly77)
 [![Build Status](https://travis-ci.org/kevalpatel2106/android-hidden-camera.svg?branch=master)](https://travis-ci.org/kevalpatel2106/android-hidden-camera) [ ![Download](https://api.bintray.com/packages/kevalpatel2106/maven/android-hidden-camera/images/download.svg) ](https://bintray.com/kevalpatel2106/maven/android-hidden-camera/_latestVersion)
 
 ## What is this library for?
@@ -105,4 +104,4 @@ public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
 3. Generate pull request. Mention all the required description regarding changes you made.
 
 ## Questions
-If you have any questions you can hit me at Twitter [@Kevalonly77](https://twitter.com/Kevalonly77)
+Hit me on twitter [![Twitter](https://img.shields.io/badge/Twitter-@kevalpatel2106-blue.svg?style=flat)](https://twitter.com/kevalpatel2106)
