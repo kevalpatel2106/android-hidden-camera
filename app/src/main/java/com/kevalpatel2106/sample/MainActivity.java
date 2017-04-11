@@ -35,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_using_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mHiddenCameraFragment != null) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .remove(mHiddenCameraFragment)
+                            .commit();
+                    mHiddenCameraFragment = null;
+                }
+
                 startActivity(new Intent(MainActivity.this, DemoCamActivity.class));
             }
         });
@@ -42,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_using_service).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mHiddenCameraFragment != null) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .remove(mHiddenCameraFragment)
+                            .commit();
+                    mHiddenCameraFragment = null;
+                }
+
                 startService(new Intent(MainActivity.this, DemoCamService.class));
             }
         });
@@ -53,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container,mHiddenCameraFragment)
+                        .replace(R.id.fragment_container, mHiddenCameraFragment)
                         .commit();
             }
         });
@@ -61,10 +77,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (mHiddenCameraFragment != null) {
-            getSupportFragmentManager().beginTransaction().remove(mHiddenCameraFragment).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(mHiddenCameraFragment)
+                    .commit();
             mHiddenCameraFragment = null;
+        }else {
+            super.onBackPressed();
         }
     }
 }
