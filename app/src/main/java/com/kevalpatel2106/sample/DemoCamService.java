@@ -71,7 +71,7 @@ public class DemoCamService extends HiddenCameraService {
                     public void run() {
                         takePicture();
                     }
-                }, 10000);
+                }, 2000);
             } else {
 
                 //Open settings to grant permission for "Draw other apps".
@@ -89,6 +89,7 @@ public class DemoCamService extends HiddenCameraService {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+        //Do something with the bitmap
 
         Log.d("Image capture", imageFile.length() + "");
         stopSelf();
@@ -102,9 +103,13 @@ public class DemoCamService extends HiddenCameraService {
                 //is using the camera
                 Toast.makeText(this, "Cannot open camera.", Toast.LENGTH_LONG).show();
                 break;
+            case CameraError.ERROR_IMAGE_WRITE_FAILED:
+                //Image write failed. Please check if you have provided WRITE_EXTERNAL_STORAGE permission
+                Toast.makeText(this, "Cannot write image captured by camera.", Toast.LENGTH_LONG).show();
+                break;
             case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
                 //camera permission is not available
-                //Ask for the camra permission before initializing it.
+                //Ask for the camera permission before initializing it.
                 Toast.makeText(this, "Camera permission not available.", Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_DOES_NOT_HAVE_OVERDRAW_PERMISSION:

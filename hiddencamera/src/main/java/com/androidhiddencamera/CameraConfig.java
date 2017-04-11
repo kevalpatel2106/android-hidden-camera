@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Keval Patel.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.androidhiddencamera;
 
 import android.content.Context;
@@ -16,7 +32,7 @@ import java.io.File;
  * @author {@link 'https://github.com/kevalpatel2106'}
  */
 
-public class CameraConfig {
+public final class CameraConfig {
     private Context mContext;
 
     @CameraResolution.SupportedResolution
@@ -78,7 +94,7 @@ public class CameraConfig {
          * @return {@link Builder}
          * @see CameraResolution
          */
-        public CameraConfig.Builder setCameraResolution(@CameraResolution.SupportedResolution int resolution) {
+        public Builder setCameraResolution(@CameraResolution.SupportedResolution int resolution) {
 
             //Validate input
             if (resolution != CameraResolution.HIGH_RESOLUTION &&
@@ -102,7 +118,7 @@ public class CameraConfig {
          * @return {@link Builder}
          * @see CameraFacing
          */
-        public CameraConfig.Builder setCameraFacing(@CameraFacing.SupportedCameraFacing int cameraFacing) {
+        public Builder setCameraFacing(@CameraFacing.SupportedCameraFacing int cameraFacing) {
             //Validate input
             if (cameraFacing != CameraFacing.REAR_FACING_CAMERA &&
                     cameraFacing != CameraFacing.FRONT_FACING_CAMERA) {
@@ -123,7 +139,7 @@ public class CameraConfig {
          * @return {@link Builder}
          * @see CameraImageFormat
          */
-        public CameraConfig.Builder setImageFormat(@CameraImageFormat.SupportedImageFormat int imageFormat) {
+        public Builder setImageFormat(@CameraImageFormat.SupportedImageFormat int imageFormat) {
             //Validate input
             if (imageFormat != CameraImageFormat.FORMAT_JPEG &&
                     imageFormat != CameraImageFormat.FORMAT_PNG) {
@@ -146,7 +162,7 @@ public class CameraConfig {
          * @return {@link Builder}
          * @see CameraRotation
          */
-        public CameraConfig.Builder setImageRotation(@CameraRotation.SupportedRotation int rotation) {
+        public Builder setImageRotation(@CameraRotation.SupportedRotation int rotation) {
             //Validate input
             if (rotation != CameraRotation.ROTATION_0
                     && rotation != CameraRotation.ROTATION_90
@@ -166,7 +182,7 @@ public class CameraConfig {
          * @param imageFile {@link File} where you want to store the image.
          * @return {@link Builder}
          */
-        public CameraConfig.Builder setImageFile(File imageFile) {
+        public Builder setImageFile(File imageFile) {
             mImageFile = imageFile;
             return this;
         }

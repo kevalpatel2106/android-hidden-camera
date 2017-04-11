@@ -1,5 +1,5 @@
 # Android Hidden Camera
-[![Build Status](https://travis-ci.org/kevalpatel2106/android-hidden-camera.svg?branch=master)](https://travis-ci.org/kevalpatel2106/android-hidden-camera) [ ![Download](https://api.bintray.com/packages/kevalpatel2106/maven/android-hidden-camera/images/download.svg) ](https://bintray.com/kevalpatel2106/maven/android-hidden-camera/_latestVersion)
+[![Build Status](https://travis-ci.org/kevalpatel2106/android-hidden-camera.svg?branch=master)](https://travis-ci.org/kevalpatel2106/android-hidden-camera) [ ![Download](https://api.bintray.com/packages/kevalpatel2106/maven/android-hidden-camera/images/download.svg) ](https://bintray.com/kevalpatel2106/maven/android-hidden-camera/_latestVersion) <a href="http://www.methodscount.com/?lib=com.kevalpatel2106%3Ahiddencamera%3A1.3"><img src="https://img.shields.io/badge/Size-36 KB-e91e63.svg"/></a>
 
 ## What is this library for?
 This library allows application to take the picture using the device camera without showing the preview of it. Any application can capture the image from front or rear camera from the background service and this library will handle all the complexity on behalf of the application. You can capture images from activity, fragment and **even from the background service** using this library.
@@ -73,6 +73,9 @@ public void onCameraError(@CameraError.CameraErrorCodes int errorCode) {
         case CameraError.ERROR_CAMERA_OPEN_FAILED:
             //Camera open failed. Probably because another application
             //is using the camera
+            break;
+        case CameraError.ERROR_IMAGE_WRITE_FAILED:
+            //Image write failed. Please check if you have provided WRITE_EXTERNAL_STORAGE permission
             break;
         case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
             //camera permission is not available

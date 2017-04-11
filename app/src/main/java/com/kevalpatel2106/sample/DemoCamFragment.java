@@ -17,6 +17,7 @@
 package com.kevalpatel2106.sample;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -119,6 +120,10 @@ public class DemoCamFragment extends HiddenCameraFragment {
                 //is using the camera
                 Toast.makeText(getActivity(), "Cannot open camera.",
                         Toast.LENGTH_LONG).show();
+                break;
+            case CameraError.ERROR_IMAGE_WRITE_FAILED:
+                //Image write failed. Please check if you have provided WRITE_EXTERNAL_STORAGE permission
+                Toast.makeText(getActivity(), "Cannot write image captured by camera.", Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_CAMERA_PERMISSION_NOT_AVAILABLE:
                 //camera permission is not available
