@@ -17,7 +17,6 @@
 package com.kevalpatel2106.sample;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +36,7 @@ import com.androidhiddencamera.HiddenCameraFragment;
 import com.androidhiddencamera.config.CameraFacing;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
+import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.File;
 
@@ -63,6 +63,7 @@ public class DemoCamFragment extends HiddenCameraFragment {
                 .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
                 .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                .setImageRotation(CameraRotation.ROTATION_270)
                 .build();
 
         //Check for the camera permission for the runtime
@@ -118,8 +119,7 @@ public class DemoCamFragment extends HiddenCameraFragment {
             case CameraError.ERROR_CAMERA_OPEN_FAILED:
                 //Camera open failed. Probably because another application
                 //is using the camera
-                Toast.makeText(getActivity(), "Cannot open camera.",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Cannot open camera.", Toast.LENGTH_LONG).show();
                 break;
             case CameraError.ERROR_IMAGE_WRITE_FAILED:
                 //Image write failed. Please check if you have provided WRITE_EXTERNAL_STORAGE permission
