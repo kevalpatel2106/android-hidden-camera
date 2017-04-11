@@ -118,7 +118,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1, 1);
             frameLayout.addView(cameraSourceCameraPreview, params);
         } else {
-            throw new RuntimeException("Root view of the activity/fragment cannot be frame layout");
+            throw new RuntimeException("Root view of the activity/fragment cannot be other than Linear/Relative or frame layout");
         }
 
         return cameraSourceCameraPreview;

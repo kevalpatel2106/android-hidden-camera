@@ -134,7 +134,7 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1, 1);
             frameLayout.addView(cameraSourceCameraPreview, params);
         } else {
-            throw new RuntimeException("Root view of the activity/fragment cannot be frame layout");
+            throw new RuntimeException("Root view of the activity/fragment cannot be other than Linear/Relative/Frame layout");
         }
 
         return cameraSourceCameraPreview;

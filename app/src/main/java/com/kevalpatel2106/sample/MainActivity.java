@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_using_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mHiddenCameraFragment != null) {
+                if (mHiddenCameraFragment != null) {    //Remove fragment from container if present
                     getSupportFragmentManager()
                             .beginTransaction()
                             .remove(mHiddenCameraFragment)
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_using_service).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mHiddenCameraFragment != null) {
+                if (mHiddenCameraFragment != null) {    //Remove fragment from container if present
                     getSupportFragmentManager()
                             .beginTransaction()
                             .remove(mHiddenCameraFragment)
@@ -77,13 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mHiddenCameraFragment != null) {
+        if (mHiddenCameraFragment != null) {    //Remove fragment from container if present
             getSupportFragmentManager()
                     .beginTransaction()
                     .remove(mHiddenCameraFragment)
                     .commit();
             mHiddenCameraFragment = null;
-        }else {
+        }else { //Kill the activity
             super.onBackPressed();
         }
     }

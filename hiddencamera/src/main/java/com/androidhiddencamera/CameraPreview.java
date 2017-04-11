@@ -138,9 +138,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(SurfaceHolder holder) {
         // Surface will be destroyed when we return, so stop the preview.
         // Call stopPreview() to stop updating the preview surface.
-        if (mCamera != null) {
-            mCamera.stopPreview();
-        }
+        if (mCamera != null) mCamera.stopPreview();
     }
 
     /**
@@ -160,7 +158,6 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
                     mCamera.startPreview();
                 } catch (IOException e) {
                     e.printStackTrace();
-
                     mCameraCallbacks.onCameraError(CameraError.ERROR_CAMERA_OPEN_FAILED);
                 }
             }
@@ -248,6 +245,7 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
      * When this function returns, mCamera will be null.
      */
     void stopPreviewAndFreeCamera() {
+        safeToTakePicture = false;
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.release();
