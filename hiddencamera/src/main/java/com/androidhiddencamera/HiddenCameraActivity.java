@@ -42,6 +42,7 @@ import com.androidhiddencamera.config.CameraFacing;
 public abstract class HiddenCameraActivity extends AppCompatActivity implements CameraCallbacks {
 
     private CameraPreview mCameraPreview;
+    private CameraConfig mCachedCameraConfig;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
 
             onCameraError(CameraError.ERROR_DOES_NOT_HAVE_FRONT_CAMERA);
         } else {
+            mCachedCameraConfig = cameraConfig;
             mCameraPreview.startCameraInternal(cameraConfig);
         }
     }
@@ -98,6 +100,7 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
      * Stop and release the camera forcefully.
      */
     public void stopCamera() {
+        mCachedCameraConfig = null;    //Remove config.
         if (mCameraPreview != null) mCameraPreview.stopPreviewAndFreeCamera();
     }
 
@@ -138,4 +141,18 @@ public abstract class HiddenCameraActivity extends AppCompatActivity implements 
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCachedCameraConfig != null) {
+            //noinspection MissingPermission
+            startCamera(mCachedCameraConfig);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mCameraPreview != null) mCameraPreview.stopPreviewAndFreeCamera();
+    }
 }

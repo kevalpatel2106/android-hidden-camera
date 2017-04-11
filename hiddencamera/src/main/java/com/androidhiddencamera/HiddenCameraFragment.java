@@ -38,16 +38,8 @@ import com.androidhiddencamera.config.CameraFacing;
  */
 
 public abstract class HiddenCameraFragment extends Fragment implements CameraCallbacks {
-
+    private CameraConfig mCachedCameraConfig;
     private CameraPreview mCameraPreview;
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        //stop preview and release the camera.
-        stopCamera();
-    }
 
     /**
      * Start the hidden camera. Make sure that you check for the runtime permissions before you start
@@ -70,6 +62,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
             //Add the camera preview surface to the root of the activity view.
             if (mCameraPreview == null) mCameraPreview = addPreView();
             mCameraPreview.startCameraInternal(cameraConfig);
+            mCachedCameraConfig = cameraConfig;
         }
     }
 
@@ -91,6 +84,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
      * Stop and release the camera forcefully.
      */
     public void stopCamera() {
+        mCachedCameraConfig = null;    //Remove config.
         if (mCameraPreview != null) mCameraPreview.stopPreviewAndFreeCamera();
     }
 
@@ -130,5 +124,18 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
         return cameraSourceCameraPreview;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCachedCameraConfig != null) {
+            //noinspection MissingPermission
+            startCamera(mCachedCameraConfig);
+        }
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mCameraPreview != null) mCameraPreview.stopPreviewAndFreeCamera();
+    }
 }
