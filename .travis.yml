@@ -53,7 +53,7 @@ script:
     - android-wait-for-emulator
     - adb devices   #Display list of devices
     - adb shell input keyevent 82 &
-    - ./gradlew connectedCheck -PdisablePreDex --stacktrace
+    - ./gradlew assembleDebug -PdisablePreDex --stacktrace
  
 before_install:
     - pip install --user codecov    #Install codecov

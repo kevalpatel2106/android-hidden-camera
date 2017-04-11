@@ -31,8 +31,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
     }
 
     buildTypes {
@@ -57,7 +55,7 @@ tasks.coveralls {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
 }
 
 
