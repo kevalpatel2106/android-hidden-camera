@@ -7,7 +7,7 @@ This library allows application to take the picture using the device camera with
 ## Gradle Dependency:
 ```
 dependencies {
-    compile 'com.kevalpatel2106:hiddencamera:1.3'
+    compile 'com.kevalpatel2106:hiddencamera:1.3.2'
 }
 ```
 
@@ -30,6 +30,7 @@ mCameraConfig = new CameraConfig()
     .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
     .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
     .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+    .setImageRotation(CameraRotation.ROTATION_270)
     .build();
 ```
 
