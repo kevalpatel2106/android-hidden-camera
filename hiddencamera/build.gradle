@@ -55,7 +55,7 @@ tasks.coveralls {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.android.support:appcompat-v7:26.1.0'
 }
 
 

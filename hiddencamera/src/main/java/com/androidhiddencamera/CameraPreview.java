@@ -31,6 +31,7 @@ import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -100,6 +101,9 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         // Make changes in preview size
         Camera.Parameters parameters = mCamera.getParameters();
         List<Camera.Size> pictureSizes = mCamera.getParameters().getSupportedPictureSizes();
+
+        //Sort descending
+        Collections.sort(pictureSizes, new PictureSizeComparator());
 
         //set the camera image size based on config provided
         Camera.Size cameraSize;
