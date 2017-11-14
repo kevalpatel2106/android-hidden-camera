@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.view.ViewGroup;
@@ -118,7 +119,9 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
 
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(1, 1,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.O ?
+                        WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY :
+                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
 
