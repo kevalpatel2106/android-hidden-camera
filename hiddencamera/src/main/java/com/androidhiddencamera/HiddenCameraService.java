@@ -39,7 +39,7 @@ import com.androidhiddencamera.config.CameraFacing;
 
 public abstract class HiddenCameraService extends Service implements CameraCallbacks {
     
-    private WindowManager wm;
+    private WindowManager mWindowManager;
     private CameraPreview mCameraPreview;
 
     @Override
@@ -105,7 +105,7 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
      */
     public void stopCamera() {
         if (mCameraPreview != null) {
-            wm.removeView(mCameraPreview);
+            mWindowManager.removeView(mCameraPreview);
             mCameraPreview.stopPreviewAndFreeCamera();
         }
     }
@@ -121,13 +121,13 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
         cameraSourceCameraPreview.setLayoutParams(new ViewGroup
                 .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(1, 1,
                 WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
 
-        wm.addView(cameraSourceCameraPreview, params);
+        mWindowManager.addView(cameraSourceCameraPreview, params);
         return cameraSourceCameraPreview;
     }
 }
