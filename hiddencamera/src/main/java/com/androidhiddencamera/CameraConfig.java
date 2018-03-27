@@ -77,7 +77,7 @@ public final class CameraConfig {
     }
 
     @CameraRotation.SupportedRotation
-    int getmImageRotation() {
+    int getImageRotation() {
         return mImageRotation;
     }
 
@@ -200,7 +200,7 @@ public final class CameraConfig {
         @NonNull
         private File getDefaultStorageFile() {
             return new File(HiddenCameraUtils.getCacheDir(mContext).getAbsolutePath()
-                    + File.pathSeparator
+                    + File.separator
                     + "IMG_" + System.currentTimeMillis()   //IMG_214515184113123.png
                     + (mImageFormat == CameraImageFormat.FORMAT_JPEG ? ".jpeg" : ".png"));
         }
