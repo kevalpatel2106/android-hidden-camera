@@ -204,8 +204,8 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
                             //Rotate the bitmap
                             Bitmap rotatedBitmap;
-                            if (mCameraConfig.getmImageRotation() != CameraRotation.ROTATION_0) {
-                                rotatedBitmap = HiddenCameraUtils.rotateBitmap(bitmap, mCameraConfig.getmImageRotation());
+                            if (mCameraConfig.getImageRotation() != CameraRotation.ROTATION_0) {
+                                rotatedBitmap = HiddenCameraUtils.rotateBitmap(bitmap, mCameraConfig.getImageRotation());
 
                                 //noinspection UnusedAssignment
                                 bitmap = null;
