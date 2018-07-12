@@ -197,6 +197,10 @@ public final class CameraConfig {
             return CameraConfig.this;
         }
 
+        /**
+         * Get the new file to store the image if there isn't any custom file location available.
+         * This will create new file into the cache directory of the application.
+         */
         @NonNull
         private File getDefaultStorageFile() {
             return new File(HiddenCameraUtils.getCacheDir(mContext).getAbsolutePath()

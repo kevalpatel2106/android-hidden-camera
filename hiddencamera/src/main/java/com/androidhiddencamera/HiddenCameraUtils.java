@@ -118,7 +118,7 @@ public final class HiddenCameraUtils {
                                      @NonNull File fileToSave,
                                      @CameraImageFormat.SupportedImageFormat int imageFormat) {
         FileOutputStream out = null;
-        boolean isSuccess = false;
+        boolean isSuccess;
 
         //Decide the image format
         Bitmap.CompressFormat compressFormat;
@@ -135,7 +135,9 @@ public final class HiddenCameraUtils {
         }
 
         try {
-            if (!fileToSave.exists()) fileToSave.createNewFile();
+            if (!fileToSave.exists()) //noinspection ResultOfMethodCallIgnored
+                fileToSave.createNewFile();
+
             out = new FileOutputStream(fileToSave);
             bitmap.compress(compressFormat, 100, out); // bmp is your Bitmap instance
             isSuccess = true;

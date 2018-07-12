@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-hidden-camera.iml" filepath="$PROJECT_DIR$/android-hidden-camera.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android-hidden-camera.iml" filepath="$PROJECT_DIR$/android-hidden-camera.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hiddencamera/hiddencamera.iml" filepath="$PROJECT_DIR$/hiddencamera/hiddencamera.iml" />
       <module fileurl="file://$PROJECT_DIR$/hiddencamera/hiddencamera.iml" filepath="$PROJECT_DIR$/hiddencamera/hiddencamera.iml" />
     </modules>
   </component>

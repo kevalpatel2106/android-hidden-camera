@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/capture_btn"
         android:layout_alignParentBottom="true"
-        android:text="Capture image"/>
+        android:text="@string/btn_tittle_capture_image"/>
 
     <ImageView
         android:id="@+id/cam_prev"

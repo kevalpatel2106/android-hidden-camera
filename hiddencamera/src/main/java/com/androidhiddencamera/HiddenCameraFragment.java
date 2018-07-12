@@ -48,7 +48,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
      * @param cameraConfig camera configuration {@link CameraConfig}
      */
     @RequiresPermission(Manifest.permission.CAMERA)
-    public void startCamera(CameraConfig cameraConfig) {
+    protected void startCamera(CameraConfig cameraConfig) {
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) { //check if the camera permission is available
@@ -70,7 +70,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
      * Call this method to capture the image using the camera you initialized. Don't forget to
      * initialize the camera using {@link #startCamera(CameraConfig)} before using this function.
      */
-    public void takePicture() {
+    protected void takePicture() {
         if (mCameraPreview != null) {
             if (mCameraPreview.isSafeToTakePictureInternal()) {
                 mCameraPreview.takePictureInternal();
@@ -83,7 +83,7 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
     /**
      * Stop and release the camera forcefully.
      */
-    public void stopCamera() {
+    protected void stopCamera() {
         mCachedCameraConfig = null;    //Remove config.
         if (mCameraPreview != null) mCameraPreview.stopPreviewAndFreeCamera();
     }
@@ -129,6 +129,11 @@ public abstract class HiddenCameraFragment extends Fragment implements CameraCal
         super.onResume();
         if (mCachedCameraConfig != null) {
             //noinspection MissingPermission
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                return;
+            }
             startCamera(mCachedCameraConfig);
         }
     }

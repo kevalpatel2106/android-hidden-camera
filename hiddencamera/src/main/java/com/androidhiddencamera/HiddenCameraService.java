@@ -39,7 +39,7 @@ import com.androidhiddencamera.config.CameraFacing;
  */
 
 public abstract class HiddenCameraService extends Service implements CameraCallbacks {
-    
+
     private WindowManager mWindowManager;
     private CameraPreview mCameraPreview;
 
@@ -65,7 +65,7 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
      * @param cameraConfig camera configuration {@link CameraConfig}
      */
     @RequiresPermission(allOf = {Manifest.permission.CAMERA, Manifest.permission.SYSTEM_ALERT_WINDOW})
-    public void startCamera(CameraConfig cameraConfig) {
+    protected void startCamera(CameraConfig cameraConfig) {
 
         if (!HiddenCameraUtils.canOverDrawOtherApps(this)) {    //Check if the draw over other app permission is available.
 
@@ -91,7 +91,7 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
      * Call this method to capture the image using the camera you initialized. Don't forget to
      * initialize the camera using {@link #startCamera(CameraConfig)} before using this function.
      */
-    public void takePicture() {
+    protected void takePicture() {
         if (mCameraPreview != null) {
             if (mCameraPreview.isSafeToTakePictureInternal()) {
                 mCameraPreview.takePictureInternal();
@@ -104,7 +104,7 @@ public abstract class HiddenCameraService extends Service implements CameraCallb
     /**
      * Stop and release the camera forcefully.
      */
-    public void stopCamera() {
+    protected void stopCamera() {
         if (mCameraPreview != null) {
             mWindowManager.removeView(mCameraPreview);
             mCameraPreview.stopPreviewAndFreeCamera();
