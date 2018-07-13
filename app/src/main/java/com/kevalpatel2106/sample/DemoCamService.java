@@ -19,13 +19,10 @@ package com.kevalpatel2106.sample;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.androidhiddencamera.CameraConfig;
@@ -33,6 +30,7 @@ import com.androidhiddencamera.CameraError;
 import com.androidhiddencamera.HiddenCameraService;
 import com.androidhiddencamera.HiddenCameraUtils;
 import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraFocus;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 
@@ -63,6 +61,7 @@ public class DemoCamService extends HiddenCameraService {
                         .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
                         .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                         .setImageFormat(CameraImageFormat.FORMAT_JPEG)
+                        .setCameraFocus(CameraFocus.AUTO)
                         .build();
 
                 startCamera(cameraConfig);
@@ -91,7 +90,10 @@ public class DemoCamService extends HiddenCameraService {
 
     @Override
     public void onImageCapture(@NonNull File imageFile) {
-        Log.d("Image capture", imageFile.length() + "");
+        Toast.makeText(this,
+                "Captured image size is : " + imageFile.length(),
+                Toast.LENGTH_SHORT)
+                .show();
 
         // Do something with the image...
 

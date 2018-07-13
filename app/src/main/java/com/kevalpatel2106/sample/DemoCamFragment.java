@@ -36,6 +36,7 @@ import com.androidhiddencamera.CameraError;
 import com.androidhiddencamera.HiddenCameraFragment;
 import com.androidhiddencamera.HiddenCameraUtils;
 import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraFocus;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
@@ -65,10 +66,11 @@ public class DemoCamFragment extends HiddenCameraFragment {
         //Setting camera configuration
         mCameraConfig = new CameraConfig()
                 .getBuilder(getActivity())
-                .setCameraFacing(CameraFacing.FRONT_FACING_CAMERA)
+                .setCameraFacing(CameraFacing.REAR_FACING_CAMERA)
                 .setCameraResolution(CameraResolution.MEDIUM_RESOLUTION)
                 .setImageFormat(CameraImageFormat.FORMAT_JPEG)
-                .setImageRotation(CameraRotation.ROTATION_270)
+                .setCameraFocus(CameraFocus.NO_FOCUS)
+                .setImageRotation(CameraRotation.ROTATION_90)
                 .build();
 
         //Check for the camera permission for the runtime

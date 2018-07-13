@@ -122,12 +122,19 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         }
         parameters.setPictureSize(cameraSize.width, cameraSize.height);
 
+        // Set the focus mode.
+        List<String> supportedFocusModes = parameters.getSupportedFocusModes();
+        if (supportedFocusModes.contains(mCameraConfig.getFocusMode())) {
+            parameters.setFocusMode(mCameraConfig.getFocusMode());
+        }
+
         requestLayout();
 
         mCamera.setParameters(parameters);
 
         try {
             mCamera.setDisplayOrientation(90);
+            mCamera.setPreviewDisplay(surfaceHolder);
             mCamera.setPreviewDisplay(surfaceHolder);
             mCamera.startPreview();
 

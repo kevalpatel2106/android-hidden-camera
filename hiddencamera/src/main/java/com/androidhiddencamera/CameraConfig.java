@@ -17,9 +17,12 @@
 package com.androidhiddencamera;
 
 import android.content.Context;
+import android.hardware.Camera;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.androidhiddencamera.config.CameraFacing;
+import com.androidhiddencamera.config.CameraFocus;
 import com.androidhiddencamera.config.CameraImageFormat;
 import com.androidhiddencamera.config.CameraResolution;
 import com.androidhiddencamera.config.CameraRotation;
@@ -47,9 +50,13 @@ public final class CameraConfig {
     @CameraRotation.SupportedRotation
     private int mImageRotation = CameraRotation.ROTATION_0;
 
+    @CameraFocus.SupportedCameraFocus
+    private int mCameraFocus = CameraFocus.AUTO;
+
     private File mImageFile;
 
     public CameraConfig() {
+        // Do nothing
     }
 
     public Builder getBuilder(Context context) {
@@ -60,6 +67,20 @@ public final class CameraConfig {
     @CameraResolution.SupportedResolution
     int getResolution() {
         return mResolution;
+    }
+
+    @Nullable
+    String getFocusMode() {
+        switch (mCameraFocus) {
+            case CameraFocus.AUTO:
+                return Camera.Parameters.FOCUS_MODE_AUTO;
+            case CameraFocus.CONTINUOUS_PICTURE:
+                return Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE;
+            case CameraFocus.NO_FOCUS:
+                return null;
+            default:
+                throw new RuntimeException("Invalid camera focus mode.");
+        }
     }
 
     @CameraFacing.SupportedCameraFacing
@@ -126,6 +147,29 @@ public final class CameraConfig {
             }
 
             mFacing = cameraFacing;
+            return this;
+        }
+
+        /**
+         * Set the camera focus mode. If you don't provide any camera focus mode,
+         * default focus mode will be {@link CameraFocus#AUTO}.
+         *
+         * @param focusMode Any camera focus mode from:
+         *                  <li>{@link CameraFocus#AUTO}</li>
+         *                  <li>{@link CameraFocus#CONTINUOUS_PICTURE}</li>
+         *                  <li>{@link CameraFocus#NO_FOCUS}</li>
+         * @return {@link Builder}
+         * @see CameraFacing
+         */
+        public Builder setCameraFocus(@CameraFocus.SupportedCameraFocus int focusMode) {
+            //Validate input
+            if (focusMode != CameraFocus.AUTO &&
+                    focusMode != CameraFocus.CONTINUOUS_PICTURE &&
+                    focusMode != CameraFocus.NO_FOCUS) {
+                throw new RuntimeException("Invalid camera focus mode.");
+            }
+
+            mCameraFocus = focusMode;
             return this;
         }
 
