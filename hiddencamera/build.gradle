@@ -55,7 +55,7 @@ dependencies {
 if (project.rootProject.file('local.properties').exists()) {
     apply plugin: 'com.jfrog.bintray'
 
-    version = "1.3.3"     // This is the library version used when deploying the artifact
+    version = "1.3.4"     // This is the library version used when deploying the artifact
 
     def siteUrl = 'https://github.com/kevalpatel2106/android-hidden-camera'        // Homepage URL of the library
     def gitUrl = 'https://github.com/kevalpatel2106/android-hidden-camera.git'      // Git repository URL
