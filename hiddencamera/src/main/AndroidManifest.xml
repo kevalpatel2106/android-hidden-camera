@@ -15,11 +15,18 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.androidhiddencamera">
+    package="com.androidhiddencamera">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.Camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
-        android:supportsRtl="true"/>
+        android:supportsRtl="true" />
 
 </manifest>
